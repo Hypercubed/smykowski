@@ -1,6 +1,6 @@
 # AJSON
 
-Advanced JSON. Like `JSON.stringify` with plugins.
+Advanced JSON. Like `JSON.stringify` with plug-ins.
 
 ## Usage
 
@@ -113,7 +113,7 @@ yields:
 
 ## Plugins
 
-Plugins are functions that take no arguments and return a "replacer" function with the signature `(value: any, path: Array<string | number>, next: Function)`.  The "replacer" function should return the encoded JS object that will continue to be processed by addional plugins.  The `path` value and the `next` callback are used to act recusivly.
+Plugins are functions that take no arguments and return a "replacer" function with the signature `(value: any, path: Array<string | number>, next: Function)`.  The "replacer" function should return the encoded JS object that will continue to be processed by additional plugins.  The `path` value and the `next` callback are used to act recursively.
 
 For example, a simple plugin that replaces all values that are not arrays with `"foo"`:
 
@@ -147,7 +147,7 @@ const asjon = new AJSON()
 asjon.stringify([1, 2, 3]);
 ```
 
-yeilds:
+yields:
 
 ```json
 ["foo","foo","foo"]
@@ -158,8 +158,8 @@ yeilds:
 * `jsonPointer`: Replaces cycles and repeated objects with [JSON Pointers](https://tools.ietf.org/html/rfc6901).
 * `recurseObjects`: Recurses plain JS objects.
 * `recurseArrays`: Recurses plain JS arrays.
-* `recurseMap`: Recurses plain Maps returing the result in the form of `{ $map: [[...]] }`
-* `recurseSet`: Recurses plain Sets returing the result in the form of `{ $set: [...] }`
+* `recurseMap`: Recurses plain Maps returning the result in the form of `{ $map: [[...]] }`
+* `recurseSet`: Recurses plain Sets returning the result in the form of `{ $set: [...] }`
 * `specialNumbers`: Returns special numeric values (`-0`, `NaN` and +/-`Infinity`) as a strict [MongoDB Extended JSON numberDecimal](https://docs.mongodb.com/manual/reference/mongodb-extended-json/#numberdecimal) (`{ $numberDecimal: "..." }`).
 * `undefinedValue`: Returns undefined values as a strict [MongoDB Extended JSON undefined](https://docs.mongodb.com/manual/reference/mongodb-extended-json/#undefined-type) (`{ $undefined: true }`).
 * `regexpValue`: Returns regular expression values as a strict [MongoDB Extended JSON Regular Expressions](https://docs.mongodb.com/manual/reference/mongodb-extended-json/#regular-expression) (`{ "$regex": "...", "$options": "..." }`).
