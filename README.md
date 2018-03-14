@@ -113,9 +113,9 @@ yields:
 
 ## Plugins
 
-Plugins are functions that take no arguments and return a "replacer" function with the signature `(value: any, path: Array<string | number>, next: Function)`.  The "replacer" function should return the encode JS object that will continue to be processed by addional plugins.  The `path` value and the `next` callback are used to act recusivly.
+Plugins are functions that take no arguments and return a "replacer" function with the signature `(value: any, path: Array<string | number>, next: Function)`.  The "replacer" function should return the encoded JS object that will continue to be processed by addional plugins.  The `path` value and the `next` callback are used to act recusivly.
 
-For example, a simple plugin that replaces all values thar are not arrays with `"foo"`:
+For example, a simple plugin that replaces all values that are not arrays with `"foo"`:
 
 ```ts
 const foo = () => {
@@ -137,7 +137,6 @@ const recurseArrays = () => {
 };
 ```
 
-const recurseArrays = () => {
 Note the use of the `next` callback to update nested values recursively.  The order of the plugins does matter.  In this case `recurseArrays` should come before `foo`:
 
 ```ts
