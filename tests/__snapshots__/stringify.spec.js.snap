@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`all 1`] = `"{\\"_id\\":\\"5aa882d3638a0f580d92c677\\",\\"index\\":0,\\"name\\":{\\"first\\":\\"Valenzuela\\",\\"last\\":\\"Valenzuela\\"},\\"registered\\":{\\"$date\\":\\"2014-01-01T07:00:00.000Z\\"},\\"symbol\\":{\\"$symbol\\":\\"banana\\"},\\"range\\":[{\\"$numberDecimal\\":\\"-Infinity\\"},0,1,2,3,4,5,6,7,8,{\\"$numberDecimal\\":\\"Infinity\\"}],\\"friends\\":[{\\"id\\":{\\"$numberDecimal\\":\\"-0\\"},\\"name\\":\\"Benton Chase\\"},{\\"id\\":1,\\"name\\":\\"Mccarthy Morgan\\"},{\\"id\\":{\\"$numberDecimal\\":\\"NaN\\"},\\"name\\":\\"Kaufman Price\\"},{\\"$ref\\":\\"#\\"},{\\"$ref\\":\\"#/friends/[0]\\"}]}"`;
+
+exports[`demo 1`] = `"[\\"foo\\",\\"foo\\",\\"foo\\"]"`;
