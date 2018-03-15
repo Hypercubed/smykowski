@@ -36,7 +36,7 @@
     "changelog": "chg release -y && git add -A CHANGELOG.md",
     "version": "npm-run-all changelog build",
     "np": "npm run build && np",
-    "docs": "typedoc ./src/index.ts --out docs --theme minimal"
+    "docs": "typedoc ./src/index.ts --out docs --mode file --theme default"
   },
   "engines": {
     "node": ">=4"
