@@ -1,3 +1,4 @@
 
 export * from './ajson';
-export * from './plugins/';
+export * from './processors/';
+export * from './plugins';

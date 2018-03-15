@@ -1,23 +1,12 @@
 import { test } from 'ava';
 import { 
   AJSON,
-  jsonPointer,
-  recurseObjects, recurseArrays, recurseMap, recurseSet,
-  specialNumbers, undefinedValue, regexpValue, dateValue,
-  symbolValue
+  recurseArrays,
+  defaultEncoders
 } from '../';
 
 const asjon = new AJSON()
-  .addProcessor(jsonPointer)
-  .addProcessor(recurseObjects)
-  .addProcessor(recurseArrays)
-  .addProcessor(recurseMap)
-  .addProcessor(recurseSet)
-  .addProcessor(specialNumbers)
-  .addProcessor(undefinedValue)
-  .addProcessor(regexpValue)
-  .addProcessor(dateValue)
-  .addProcessor(symbolValue);
+  .use(defaultEncoders);
 
 test('all', t => {
   const obj = {
@@ -72,8 +61,8 @@ test('demo', t => {
   };
 
   const a = new AJSON()
-    .addProcessor(recurseArrays)
-    .addProcessor(foo);
+    .addEncoder(recurseArrays)
+    .addEncoder(foo);
 
   t.snapshot(a.stringify([1, 2, 3]));
 });

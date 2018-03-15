@@ -17,8 +17,13 @@ export class AJSON {
     return JSON.stringify(this.encode(value), replacer, space);
   }
 
-  addProcessor(fn: Processor) {
+  addEncoder(fn: Processor) {
     this._processors.push(fn);
+    return this;
+  }
+
+  use(plugin: (a: AJSON) => AJSON) {
+    plugin(this);
     return this;
   }
 }

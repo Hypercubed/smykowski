@@ -19,9 +19,12 @@
     "dist"
   ],
   "scripts": {
-    "build": "npm-run-all build:main build:module docs",
+    "build": "npm-run-all clean build:main build:module docs",
     "build:main": "tsc -p tsconfig.json",
     "build:module": "tsc -p tsconfig.module.json",
+    "clean": "npm-run-all clean:dist clean:docs",
+    "clean:dist": "rimraf dist",
+    "clean:docs": "rimraf docs",
     "lint": "tslint --project .",
     "unit": "nyc --silent ava",
     "check-coverage": "nyc check-coverage --lines 100 --functions 100 --branches 90",
@@ -66,6 +69,7 @@
     ]
   },
   "dependencies": {
+    "rimraf": "^2.6.2",
     "tslib": "^1.7.1"
   }
 }

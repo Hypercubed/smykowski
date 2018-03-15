@@ -1,26 +1,10 @@
 import { test } from 'ava';
 import { Person } from './fixtures/person';
 
-import { 
-  AJSON,
-  jsonPointer,
-  recurseObjects, recurseArrays, recurseMap, recurseSet,
-  specialNumbers, undefinedValue, regexpValue, dateValue,
-  symbolValue, toJSON
-} from '..';
+import {  AJSON, defaultEncoders } from '..';
 
 const asjon = new AJSON()
-  .addProcessor(jsonPointer)
-  .addProcessor(recurseObjects)
-  .addProcessor(recurseArrays)
-  .addProcessor(recurseMap)
-  .addProcessor(recurseSet)
-  .addProcessor(specialNumbers)
-  .addProcessor(undefinedValue)
-  .addProcessor(regexpValue)
-  .addProcessor(dateValue)
-  .addProcessor(symbolValue)
-  .addProcessor(toJSON);
+  .use(defaultEncoders);
 
 test('prim values', t => {
   t.deepEqual(asjon.encode(42), 42, 'number');
@@ -47,6 +31,10 @@ test('objects', t => {
   t.deepEqual(asjon.encode({foo: 'bar', 'x-y': 'z'}), { foo: 'bar', 'x-y': 'z'}, 'Object');
   t.deepEqual(asjon.encode(new Set([1, 2, 3])), { $set: [1, 2, 3]}, 'Set');
   t.deepEqual(asjon.encode(new Map([['a', 'b']])), { $map: [['a', 'b']]}, 'Map');
+});
+
+test('buffer', t => {
+  t.deepEqual(asjon.encode(new Buffer([255, 255, 255])), { $binary: '////' }, 'Buffer');
 });
 
 test('objects with special values', t => {

@@ -7,18 +7,18 @@ import {
   jestSerializer
 } from '../';
 
-test('custom processor', t => {
+test('custom encoder', t => {
   const person = new Person('Benton', 'Chase');
   const a = new AJSON()
-    .addProcessor(() => v => (v instanceof Person) ? { '@@Person': `${v.last}, ${v.first}` } : v);
+    .addEncoder(() => v => (v instanceof Person) ? { '@@Person': `${v.last}, ${v.first}` } : v);
   t.deepEqual(a.encode(person), { '@@Person': 'Chase, Benton' });
 });
 
 test('jest-serializer', t => {
   const a = new AJSON()
-    .addProcessor(recurseObjects)
-    .addProcessor(recurseArrays)
-    .addProcessor(jestSerializer);
+    .addEncoder(recurseObjects)
+    .addEncoder(recurseArrays)
+    .addEncoder(jestSerializer);
 
   const objs = [
     3,

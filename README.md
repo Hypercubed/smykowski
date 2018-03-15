@@ -13,12 +13,12 @@ import {
 } from 'ajson';
 
 const asjon = new AJSON()
-  .addProcessor(jsonPointer)
-  .addProcessor(recurseObjects)
-  .addProcessor(recurseArrays)
-  .addProcessor(specialNumbers)
-  .addProcessor(dateValue)
-  .addProcessor(symbolValue);
+  .addEncoder(jsonPointer)
+  .addEncoder(recurseObjects)
+  .addEncoder(recurseArrays)
+  .addEncoder(specialNumbers)
+  .addEncoder(dateValue)
+  .addEncoder(symbolValue);
 
 const obj = {
   _id: '5aa882d3638a0f580d92c677',
@@ -141,8 +141,8 @@ Note the use of the `next` callback to update nested values recursively.  The or
 
 ```ts
 const asjon = new AJSON()
-  .addProcessor(recurseArrays)
-  .addProcessor(foo);
+  .addEncoder(recurseArrays)
+  .addEncoder(foo);
 
 asjon.stringify([1, 2, 3]);
 ```

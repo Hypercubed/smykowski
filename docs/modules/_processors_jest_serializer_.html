@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ajson | ajson</title>
+	<title>&quot;processors/jest-serializer&quot; | ajson</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style type="text/css">/*! normalize.css v1.1.3 | MIT License | git.io/normalize */
@@ -879,7 +879,7 @@ img { max-width: 100%; }
 		<div class="container">
 			<div class="table-wrap">
 				<div class="table-cell">
-					<strong><a href="index.html">ajson</a></strong>
+					<strong><a href="../index.html">ajson</a></strong>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -909,183 +909,127 @@ img { max-width: 100%; }
 </header>
 <nav class="tsd-navigation secondary">
 	<ul>
+		<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
+			<a href="_processors_jest_serializer_.html#js_type" class="tsd-kind-icon">JS_<wbr>TYPE</a>
+		</li>
+		<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
+			<a href="_processors_jest_serializer_.html#js_value" class="tsd-kind-icon">JS_<wbr>VALUE</a>
+		</li>
+		<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
+			<a href="_processors_jest_serializer_.html#js_vf" class="tsd-kind-icon">JS_<wbr>VF</a>
+		</li>
+		<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
+			<a href="_processors_jest_serializer_.html#jestreplacer" class="tsd-kind-icon">jest<wbr>Replacer</a>
+		</li>
+		<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-external">
+			<a href="_processors_jest_serializer_.html#jestserializer" class="tsd-kind-icon">jest<wbr>Serializer</a>
+		</li>
 	</ul>
 </nav>
 <div class="container container-main">
 	<div class="content-wrap">
-		<div class="tsd-panel tsd-typography">
-			<h1 id="ajson">AJSON</h1>
-			<p>Advanced JSON. Like <code>JSON.stringify</code> with plug-ins.</p>
-			<h2 id="usage">Usage</h2>
-			<pre><code class="lang-js"><span class="hljs-keyword">import</span> {
-  AJSON,
-  jsonPointer,
-  recurseObjects, recurseArrays,
-  specialNumbers, dateValue, symbolValue
-} <span class="hljs-keyword">from</span> <span class="hljs-string">'ajson'</span>;
-
-<span class="hljs-keyword">const</span> asjon = <span class="hljs-keyword">new</span> AJSON()
-  .addEncoder(jsonPointer)
-  .addEncoder(recurseObjects)
-  .addEncoder(recurseArrays)
-  .addEncoder(specialNumbers)
-  .addEncoder(dateValue)
-  .addEncoder(symbolValue);
-
-<span class="hljs-keyword">const</span> obj = {
-  <span class="hljs-attr">_id</span>: <span class="hljs-string">'5aa882d3638a0f580d92c677'</span>,
-  <span class="hljs-attr">index</span>: <span class="hljs-number">0</span>,
-  <span class="hljs-attr">name</span>: {
-    <span class="hljs-attr">first</span>: <span class="hljs-string">'Valenzuela'</span>,
-    <span class="hljs-attr">last</span>: <span class="hljs-string">'Valenzuela'</span>
-  },
-  <span class="hljs-attr">registered</span>: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-number">2014</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>),
-  <span class="hljs-attr">symbol</span>: <span class="hljs-built_in">Symbol</span>(<span class="hljs-string">'banana'</span>),
-  <span class="hljs-attr">range</span>: [
-    -<span class="hljs-literal">Infinity</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-literal">Infinity</span>
-  ],
-  <span class="hljs-attr">friends</span>: [
-    {
-      <span class="hljs-attr">id</span>: <span class="hljs-number">-0</span>,
-      <span class="hljs-attr">name</span>: <span class="hljs-string">'Benton Chase'</span>
-    },
-    {
-      <span class="hljs-attr">id</span>: <span class="hljs-number">1</span>,
-      <span class="hljs-attr">name</span>: <span class="hljs-string">'Mccarthy Morgan'</span>
-    },
-    {
-      <span class="hljs-attr">id</span>: <span class="hljs-literal">NaN</span>,
-      <span class="hljs-attr">name</span>: <span class="hljs-string">'Kaufman Price'</span>
-    }
-  ]
-};
-
-asjon.stringify(obj, <span class="hljs-literal">null</span>, <span class="hljs-number">2</span>);
-</code></pre>
-			<p>yields:</p>
-			<pre><code class="lang-json">{
-  <span class="hljs-attr">"_id"</span>: <span class="hljs-string">"5aa882d3638a0f580d92c677"</span>,
-  <span class="hljs-attr">"index"</span>: <span class="hljs-number">0</span>,
-  <span class="hljs-attr">"name"</span>: {
-    <span class="hljs-attr">"first"</span>: <span class="hljs-string">"Valenzuela"</span>,
-    <span class="hljs-attr">"last"</span>: <span class="hljs-string">"Valenzuela"</span>
-  },
-  <span class="hljs-attr">"registered"</span>: {
-    <span class="hljs-attr">"$date"</span>: <span class="hljs-string">"2014-01-01T07:00:00.000Z"</span>
-  },
-  <span class="hljs-attr">"symbol"</span>: {
-    <span class="hljs-attr">"$symbol"</span>: <span class="hljs-string">"banana"</span>
-  },
-  <span class="hljs-attr">"range"</span>: [
-    {
-      <span class="hljs-attr">"$numberDecimal"</span>: <span class="hljs-string">"-Infinity"</span>
-    },
-    <span class="hljs-number">0</span>,
-    <span class="hljs-number">1</span>,
-    <span class="hljs-number">2</span>,
-    <span class="hljs-number">3</span>,
-    <span class="hljs-number">4</span>,
-    <span class="hljs-number">5</span>,
-    <span class="hljs-number">6</span>,
-    <span class="hljs-number">7</span>,
-    <span class="hljs-number">8</span>,
-    {
-      <span class="hljs-attr">"$numberDecimal"</span>: <span class="hljs-string">"Infinity"</span>
-    }
-  ],
-  <span class="hljs-attr">"friends"</span>: [
-    {
-      <span class="hljs-attr">"id"</span>: {
-        <span class="hljs-attr">"$numberDecimal"</span>: <span class="hljs-string">"-0"</span>
-      },
-      <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Benton Chase"</span>
-    },
-    {
-      <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
-      <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Mccarthy Morgan"</span>
-    },
-    {
-      <span class="hljs-attr">"id"</span>: {
-        <span class="hljs-attr">"$numberDecimal"</span>: <span class="hljs-string">"NaN"</span>
-      },
-      <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Kaufman Price"</span>
-    },
-    {
-      <span class="hljs-attr">"$ref"</span>: <span class="hljs-string">"#"</span>
-    },
-    {
-      <span class="hljs-attr">"$ref"</span>: <span class="hljs-string">"#/friends/[0]"</span>
-    }
-  ]
-}
-</code></pre>
-			<h2 id="plugins">Plugins</h2>
-			<p>Plugins are functions that take no arguments and return a &quot;replacer&quot; function with the signature <code>(value: any, path: Array&lt;string | number&gt;, next: Function)</code>.  The &quot;replacer&quot; function should return the encoded JS object that will continue to be processed by additional plugins.  The <code>path</code> value and the <code>next</code> callback are used to act recursively.</p>
-			<p>For example, a simple plugin that replaces all values that are not arrays with <code>&quot;foo&quot;</code>:</p>
-			<pre><code class="lang-ts"><span class="hljs-keyword">const</span> foo = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
-  <span class="hljs-keyword">const</span> FOO = <span class="hljs-string">'foo'</span>;
-  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span> {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Array</span>.isArray(value) ? v : FOO;
-  };
-};
-</code></pre>
-			<p>A plugin that recurses arrays:</p>
-			<pre><code class="lang-ts"><span class="hljs-keyword">const</span> recurseArrays = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
-  <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params">value, path, next</span>) =&gt;</span> {
-    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">Array</span>.isArray(value)) <span class="hljs-keyword">return</span> value.map(<span class="hljs-function">(<span class="hljs-params">v, i</span>) =&gt;</span> next(v, [...path, i]));
-    <span class="hljs-keyword">return</span> v;
-  };
-};
-</code></pre>
-			<p>Note the use of the <code>next</code> callback to update nested values recursively.  The order of the plugins does matter.  In this case <code>recurseArrays</code> should come before <code>foo</code>:</p>
-			<pre><code class="lang-ts"><span class="hljs-keyword">const</span> asjon = <span class="hljs-keyword">new</span> AJSON()
-  .addEncoder(recurseArrays)
-  .addEncoder(foo);
-
-asjon.stringify([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]);
-</code></pre>
-			<p>yields:</p>
-			<pre><code class="lang-json">[<span class="hljs-string">"foo"</span>,<span class="hljs-string">"foo"</span>,<span class="hljs-string">"foo"</span>]
-</code></pre>
-			<h2 id="supplied-plugins">Supplied plugins</h2>
-			<ul>
-				<li><code>jsonPointer</code>: Replaces cycles and repeated objects with <a href="https://tools.ietf.org/html/rfc6901">JSON Pointers</a>.</li>
-				<li><code>recurseObjects</code>: Recurses plain JS objects.</li>
-				<li><code>recurseArrays</code>: Recurses plain JS arrays.</li>
-				<li><code>recurseMap</code>: Recurses plain Maps returning the result in the form of <code>{ $map: [[...]] }</code></li>
-				<li><code>recurseSet</code>: Recurses plain Sets returning the result in the form of <code>{ $set: [...] }</code></li>
-				<li><code>specialNumbers</code>: Returns special numeric values (<code>-0</code>, <code>NaN</code> and +/-<code>Infinity</code>) as a strict <a href="https://docs.mongodb.com/manual/reference/mongodb-extended-json/#numberdecimal">MongoDB Extended JSON numberDecimal</a> (<code>{ $numberDecimal: &quot;...&quot; }</code>).</li>
-				<li><code>undefinedValue</code>: Returns undefined values as a strict <a href="https://docs.mongodb.com/manual/reference/mongodb-extended-json/#undefined-type">MongoDB Extended JSON undefined</a> (<code>{ $undefined: true }</code>).</li>
-				<li><code>regexpValue</code>: Returns regular expression values as a strict <a href="https://docs.mongodb.com/manual/reference/mongodb-extended-json/#regular-expression">MongoDB Extended JSON Regular Expressions</a> (<code>{ &quot;$regex&quot;: &quot;...&quot;, &quot;$options&quot;: &quot;...&quot; }</code>).</li>
-				<li><code>dateValue</code>: Returns dates as a strict <a href="https://docs.mongodb.com/manual/reference/mongodb-extended-json/#date">MongoDB Extended JSON Regular Date</a> (<code>{ &quot;$date&quot;: &quot;...&quot; }</code>).</li>
-				<li><code>symbolValue</code>: Returns symbols in the form of <code>{ $symbol: &quot;...&quot; }</code></li>
-			</ul>
-			<h2 id="alternatives">Alternatives</h2>
-			<ul>
-				<li><a href="https://github.com/Rich-Harris/devalue">devalue</a> by Rich Harris</li>
-				<li><a href="https://github.com/benjamn/arson">arson</a> by Ben Newman</li>
-				<li><a href="https://github.com/tj/eson">eson</a> by TJ Holowaychuk</li>
-			</ul>
-			<h2 id="license">License</h2>
-			<p>This project is licensed under the MIT License - see the LICENSE file for details</p>
-		</div>
-		<div style="position:relative;"><a name="typedoc-main-index" class="tsd-anchor"></a></div>
 		<section class="tsd-panel-group tsd-index-group">
 			<h2>Index</h2>
 			<section class="tsd-panel tsd-index-panel">
 				<div class="tsd-index-content">
-					<section class="tsd-index-section ">
-						<h3>External modules</h3>
+					<section class="tsd-index-section tsd-is-external tsd-is-not-exported">
+						<h3>Variables</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_ajson_.html" class="tsd-kind-icon">"ajson"</a></li>
-							<li class="tsd-kind-external-module"><a href="modules/_index_.html" class="tsd-kind-icon">"index"</a></li>
-							<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_plugins_.html" class="tsd-kind-icon">"plugins"</a></li>
-							<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_processors_index_.html" class="tsd-kind-icon">"processors/index"</a></li>
-							<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_processors_jest_serializer_.html" class="tsd-kind-icon">"processors/jest-<wbr>serializer"</a></li>
-							<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_types_.html" class="tsd-kind-icon">"types"</a></li>
+							<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported"><a href="_processors_jest_serializer_.html#js_type" class="tsd-kind-icon">JS_<wbr>TYPE</a></li>
+							<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported"><a href="_processors_jest_serializer_.html#js_value" class="tsd-kind-icon">JS_<wbr>VALUE</a></li>
+							<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported"><a href="_processors_jest_serializer_.html#js_vf" class="tsd-kind-icon">JS_<wbr>VF</a></li>
+						</ul>
+					</section>
+					<section class="tsd-index-section tsd-is-external">
+						<h3>Functions</h3>
+						<ul class="tsd-index-list">
+							<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported"><a href="_processors_jest_serializer_.html#jestreplacer" class="tsd-kind-icon">jest<wbr>Replacer</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-external"><a href="_processors_jest_serializer_.html#jestserializer" class="tsd-kind-icon">jest<wbr>Serializer</a></li>
 						</ul>
 					</section>
 				</div>
+			</section>
+		</section>
+		<section class="tsd-panel-group tsd-member-group tsd-is-external tsd-is-not-exported">
+			<h2>Variables</h2>
+			<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
+				<a name="js_type" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagConst">Const</span> JS_<wbr>TYPE</h3>
+				<div class="tsd-signature tsd-kind-icon">JS_<wbr>TYPE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"__$t__"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;__$t__&quot;</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/Hypercubed/ajson/blob/a1e2bc7/src/processors/jest-serializer.ts#L11">processors/jest-serializer.ts:11</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
+				<a name="js_value" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagConst">Const</span> JS_<wbr>VALUE</h3>
+				<div class="tsd-signature tsd-kind-icon">JS_<wbr>VALUE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"__$v__"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;__$v__&quot;</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/Hypercubed/ajson/blob/a1e2bc7/src/processors/jest-serializer.ts#L12">processors/jest-serializer.ts:12</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
+				<a name="js_vf" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagConst">Const</span> JS_<wbr>VF</h3>
+				<div class="tsd-signature tsd-kind-icon">JS_<wbr>VF<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"__$f__"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;__$f__&quot;</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/Hypercubed/ajson/blob/a1e2bc7/src/processors/jest-serializer.ts#L13">processors/jest-serializer.ts:13</a></li>
+					</ul>
+				</aside>
+			</section>
+		</section>
+		<section class="tsd-panel-group tsd-member-group tsd-is-external">
+			<h2>Functions</h2>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
+				<a name="jestreplacer" class="tsd-anchor"></a>
+				<h3>jest<wbr>Replacer</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
+					<li class="tsd-signature tsd-kind-icon">jest<wbr>Replacer<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, path<span class="tsd-signature-symbol">: </span><a href="_types_.html#path" class="tsd-signature-type">Path</a>, decend<span class="tsd-signature-symbol">: </span><a href="_types_.html#iget" class="tsd-signature-type">IGet</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/Hypercubed/ajson/blob/a1e2bc7/src/processors/jest-serializer.ts#L15">processors/jest-serializer.ts:15</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>value: <span class="tsd-signature-type">any</span></h5>
+							</li>
+							<li>
+								<h5>path: <a href="_types_.html#path" class="tsd-signature-type">Path</a></h5>
+							</li>
+							<li>
+								<h5>decend: <a href="_types_.html#iget" class="tsd-signature-type">IGet</a></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-external">
+				<a name="jestserializer" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagConst">Const</span> jest<wbr>Serializer</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-external">
+					<li class="tsd-signature tsd-kind-icon">jest<wbr>Serializer<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_processors_jest_serializer_.html#jestreplacer" class="tsd-signature-type">jestReplacer</a></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/Hypercubed/ajson/blob/a1e2bc7/src/processors/jest-serializer.ts#L3">processors/jest-serializer.ts:3</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-returns-title">Returns <a href="_processors_jest_serializer_.html#jestreplacer" class="tsd-signature-type">jestReplacer</a></h4>
+					</li>
+				</ul>
 			</section>
 		</section>
 		<footer class="with-border-bottom">
