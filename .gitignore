@@ -1,11 +1,6 @@
 node_modules
 build
 dist
-test
-src/**/**.js
-src/**/*.d.ts
-test/**/*.js
-test/**/*.d.ts
 .vscode/
 
 coverage

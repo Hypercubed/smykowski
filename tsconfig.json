@@ -2,7 +2,7 @@
   "compilerOptions": {
     "strictNullChecks": true,
     "target": "es5",
-    "outDir": "dist",
+    "outDir": "dist/main",
     "rootDir": "src",
     "moduleResolution": "node",
     "module": "commonjs",

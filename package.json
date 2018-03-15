@@ -2,8 +2,9 @@
   "name": "ajson",
   "version": "0.0.0",
   "description": "",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "dist/main/index.js",
+  "typings": "dist/main/index.d.ts",
+  "module": "dist/module/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/ajson"
@@ -18,13 +19,13 @@
     "dist"
   ],
   "scripts": {
-    "build": "npm-run-all build:dist build:tests",
-    "build:tests": "tsc -p tsconfig.tests.json",
-    "build:dist": "tsc -p tsconfig.json",
-    "lint": "tslint src/**/*.ts",
-    "unit": "nyc ava ./tests/*.spec.js",
+    "build": "npm-run-all build:main build:module docs",
+    "build:main": "tsc -p tsconfig.json",
+    "build:module": "tsc -p tsconfig.module.json",
+    "lint": "tslint --project .",
+    "unit": "nyc --silent ava",
     "check-coverage": "nyc check-coverage --lines 100 --functions 100 --branches 90",
-    "test": "npm-run-all lint build unit check-coverage",
+    "test": "npm-run-all lint build:main unit check-coverage",
     "watch": "npm run build && concurrently -r --kill-others 'npm run --silent build -- -w' 'sleepms 2000 && ava ./dist/*.spec.js --watch'",
     "cov": "npm-run-all build unit html-coverage && opn coverage/index.html",
     "html-coverage": "nyc report --reporter=html",
@@ -38,19 +39,19 @@
     "node": ">=4"
   },
   "devDependencies": {
-    "@types/node": "^7.0.31",
-    "ava": "^0.19.0",
+    "@types/node": "^9.4.7",
+    "ava": "^0.25.0",
     "chg": "^0.3.2",
-    "codecov": "^2.0.1",
+    "codecov": "^3.0.0",
     "concurrently": "^3.5.0",
     "np": "^2.16.0",
     "npm-run-all": "^4.0.2",
-    "nyc": "^10.2.0",
+    "nyc": "^11.6.0",
     "sleep-ms": "^2.0.1",
     "tslint": "^5.0.0",
     "tslint-config-swimlane": "^3.0.2",
-    "typedoc": "^0.9.0",
-    "typescript": "^2.2.2"
+    "typedoc": "^0.11.1",
+    "typescript": "^2.7.2"
   },
   "keywords": [],
   "nyc": {
@@ -59,8 +60,9 @@
     ]
   },
   "ava": {
-    "source": [
-      "dist/**/*.spec.js"
+    "failFast": true,
+    "files": [
+      "dist/main/**/*.spec.js"
     ]
   },
   "dependencies": {

@@ -1,3 +1,3 @@
 
 export * from './ajson';
-export * from './plugins';
+export * from './plugins/';

@@ -5,7 +5,7 @@ import {
   recurseObjects, recurseArrays, recurseMap, recurseSet,
   specialNumbers, undefinedValue, regexpValue, dateValue,
   symbolValue
-} from '../dist/';
+} from '../';
 
 const asjon = new AJSON()
   .addProcessor(jsonPointer)
@@ -52,8 +52,6 @@ test('all', t => {
   obj.friends.push(obj.friends[0]);
 
   t.snapshot(asjon.stringify(obj));
-
-  // console.log(asjon.stringify(obj, null, 2));
 });
 
 test('demo', t => {
@@ -73,10 +71,9 @@ test('demo', t => {
     };
   };
 
-  const _asjon = new AJSON()
+  const a = new AJSON()
     .addProcessor(recurseArrays)
     .addProcessor(foo);
 
-  t.snapshot(_asjon.stringify([1, 2, 3]));
-  // console.log(_asjon.stringify([1, 2, 3]));
+  t.snapshot(a.stringify([1, 2, 3]));
 });

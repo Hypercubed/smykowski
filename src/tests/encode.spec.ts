@@ -1,11 +1,13 @@
 import { test } from 'ava';
+import { Person } from './fixtures/person';
+
 import { 
   AJSON,
   jsonPointer,
   recurseObjects, recurseArrays, recurseMap, recurseSet,
   specialNumbers, undefinedValue, regexpValue, dateValue,
-  symbolValue
-} from '../dist/';
+  symbolValue, toJSON
+} from '..';
 
 const asjon = new AJSON()
   .addProcessor(jsonPointer)
@@ -17,7 +19,8 @@ const asjon = new AJSON()
   .addProcessor(undefinedValue)
   .addProcessor(regexpValue)
   .addProcessor(dateValue)
-  .addProcessor(symbolValue);
+  .addProcessor(symbolValue)
+  .addProcessor(toJSON);
 
 test('prim values', t => {
   t.deepEqual(asjon.encode(42), 42, 'number');
@@ -148,4 +151,12 @@ test('references', t => {
   const b: any = {a: 1, b: { c: {} }};
   b.c = b.b.c;
   t.deepEqual(asjon.encode(b), { a: 1, b: { c: {}}, c: { $ref: '#/b/c'}});
+});
+
+test('toJSON', t => {
+  const p = new Person('Benton', 'Chase');
+  t.deepEqual(asjon.encode(p), {
+    '@@Person': 'Benton Chase',
+    dob: { $date: '2001-09-09T01:46:40.000Z' }
+  });
 });

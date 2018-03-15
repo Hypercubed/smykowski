@@ -1,4 +1,6 @@
-import { Path, IGet } from './types';
+import { Path, IGet } from '../types';
+
+export * from './jest-serializer';
 
 export const jsonPointer = () => {
   const repeated = new WeakMap();
@@ -20,10 +22,10 @@ export const jsonPointer = () => {
 };
 
 export const recurseObjects = () => {
-  return (v, path: Path, cb: IGet) => {
+  return (v, path: Path, decend: IGet) => {
     if (v !== null && isPojo(v)) {
       return Object.keys(v).reduce((acc, key) => {
-        acc[key] = cb(v[key], [...path, key]);
+        acc[key] = decend(v[key], path.concat([key]));
         return acc;
       }, {});
     }
@@ -39,9 +41,9 @@ export const recurseObjects = () => {
 };
 
 export const recurseArrays = () => {
-  return (v: any, path: Path, cb: IGet) => {
+  return (v: any, path: Path, decend: IGet) => {
     if (Array.isArray(v)) {
-      return v.map((_, i) => cb(_, [...path, i]));
+      return v.map((_, i) => decend(_, path.concat([i])));
     }
     return v;
   };
@@ -93,18 +95,27 @@ export const symbolValue = () => {
 };
 
 export const recurseMap = () => {
-  return (v: any, path, cb) => {
+  return (v: any, path: Path, decend: IGet) => {
     if (v instanceof Map) {
-      return { $map: cb(Array.from(v), path) };
+      return { $map: decend(Array.from(v), path) };
     }
     return v;
   };
 };
 
 export const recurseSet = () => {
-  return (v: any, path, cb) => {
+  return (v: any, path: Path, decend: IGet) => {
     if (v instanceof Set) {
-      return { $set: cb(Array.from(v), path) };
+      return { $set: decend(Array.from(v), path) };
+    }
+    return v;
+  };
+};
+
+export const toJSON = () => {
+  return (v: any, path: Path, decend: IGet) => {
+    if (v !== null && typeof v.toJSON === 'function') {
+      return decend(v.toJSON(), path);
     }
     return v;
   };
