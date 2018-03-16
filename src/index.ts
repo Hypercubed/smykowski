@@ -1,4 +1,4 @@
 
 export * from './ajson';
-export * from './processors/';
+export * from './encoders/';
 export * from './plugins';

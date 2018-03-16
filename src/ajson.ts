@@ -1,10 +1,11 @@
-import { Processor, Path } from './types';
+import { Encoder, Path } from './types';
 
 export class AJSON {
-  private _processors: Processor[] = [];
+  private _encoders: Encoder[] = [];
+  private _decoders: Encoder[] = [];
 
   encode(value: any): any {
-    const reducers = this._processors
+    const reducers = this._encoders
       .map(p => p());
     return get(value, ['#']);
 
@@ -13,12 +14,27 @@ export class AJSON {
     }
   }
 
+  decode(value: any): any {
+    const decoders = this._decoders
+      .map(p => p(value));
+    return get(value, ['#']);
+
+    function get(v: any, path: Path): any {
+      return decoders.reduce((acc, fn) => fn(acc, path, get), v);
+    }
+  }
+
   stringify(value, replacer?, space?) {
     return JSON.stringify(this.encode(value), replacer, space);
   }
 
-  addEncoder(fn: Processor) {
-    this._processors.push(fn);
+  addEncoder(fn: Encoder) {
+    this._encoders.push(fn);
+    return this;
+  }
+
+  addDecoder(fn: Encoder) {
+    this._decoders.push(fn);
     return this;
   }
 

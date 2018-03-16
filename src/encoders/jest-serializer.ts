@@ -1,4 +1,4 @@
-import { Path, IGet } from '../types';
+import { Path, DecendFunction } from '../types';
 
 export const jestSerializer = () => jestReplacer;
 
@@ -12,7 +12,7 @@ const JS_TYPE = '__$t__';
 const JS_VALUE = '__$v__';
 const JS_VF = '__$f__';
 
-function jestReplacer(value: any, path: Path, decend: IGet): any {
+function jestReplacer(value: any, path: Path, decend: DecendFunction): any {
   // NaN cannot be in a switch statement, because NaN !== NaN.
   if (Number.isNaN(value)) {
     return {[JS_TYPE]: 'n'};

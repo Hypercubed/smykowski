@@ -69,6 +69,7 @@
     ]
   },
   "dependencies": {
+    "jsonpointer": "^4.0.1",
     "rimraf": "^2.6.2",
     "tslib": "^1.7.1"
   }

@@ -1,7 +1,7 @@
 import { test } from 'ava';
 import { Person } from './fixtures/person';
 
-import {  AJSON, defaultEncoders } from '..';
+import { AJSON, defaultEncoders } from '..';
 
 const asjon = new AJSON()
   .use(defaultEncoders);
