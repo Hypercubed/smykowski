@@ -24,8 +24,12 @@ export class AJSON {
     }
   }
 
-  stringify(value, replacer?, space?) {
+  stringify(value: any, replacer?, space?: string | number | undefined) {
     return JSON.stringify(this.encode(value), replacer, space);
+  }
+
+  parse(value: string, reviver?) {
+    return this.decode(JSON.parse(value, reviver));
   }
 
   addEncoder(fn: Encoder) {
