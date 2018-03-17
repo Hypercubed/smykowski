@@ -63,13 +63,13 @@
     ]
   },
   "ava": {
-    "failFast": true,
+    "failFast": false,
     "files": [
       "dist/main/**/*.spec.js"
     ]
   },
   "dependencies": {
-    "jsonpointer": "^4.0.1",
+    "json-pointer": "^0.6.0",
     "rimraf": "^2.6.2",
     "tslib": "^1.7.1"
   }

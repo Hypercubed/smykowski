@@ -1,7 +1,7 @@
 import { test } from 'ava';
 import { 
   AJSON,
-  recurseArrays,
+  // recurseArrays,
   defaultEncoders
 } from '../';
 
@@ -61,7 +61,7 @@ test('demo', t => {
   };
 
   const a = new AJSON()
-    .addEncoder(recurseArrays)
+    // .addEncoder(recurseArrays)
     .addEncoder(foo);
 
   t.snapshot(a.stringify([1, 2, 3]));

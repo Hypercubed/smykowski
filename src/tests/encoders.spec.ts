@@ -3,7 +3,6 @@ import { Person } from './fixtures/person';
 
 import { 
   AJSON,
-  recurseObjects, recurseArrays,
   jestSerializer
 } from '../';
 
@@ -16,8 +15,6 @@ test('custom encoder', t => {
 
 test('jest-serializer', t => {
   const a = new AJSON()
-    .addEncoder(recurseObjects)
-    .addEncoder(recurseArrays)
     .addEncoder(jestSerializer);
 
   const objs = [

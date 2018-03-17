@@ -16,7 +16,7 @@ export const decodeSymbolValue = () => {
   };
 };
 
-export const recurseDecodeMap = () => {
+export const decodeMap = () => {
   return (v: any) => {
     if (v !== null && typeof v === 'object' && v.hasOwnProperty('$map')) {
       return new Map(v.$map);
@@ -34,7 +34,7 @@ export const decodeBufferValue = () => {
   };
 };
 
-export const recurseDecodeSet = () => {
+export const decodeSet = () => {
   return (v: any) => {
     if (v !== null && typeof v === 'object' && v.hasOwnProperty('$set')) {
       return new Set(v.$set);

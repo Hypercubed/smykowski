@@ -3,10 +3,8 @@ import { test } from 'ava';
 import { AJSON, defaultDecoders } from '..';
 import { Person } from './fixtures/person';
 
-import * as jsonpointer from 'jsonpointer';
-
 export const decodePerson = () => {
-  return (v: any, path, decend) => {
+  return (v: any, path) => {
     if (v && typeof v['@@Person'] === 'string') {
       return Person.fromJSON(v);
     }

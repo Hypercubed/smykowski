@@ -3,8 +3,6 @@ import { test } from 'ava';
 import { AJSON, defaultDecoders } from '..';
 import { Person } from './fixtures/person';
 
-import * as jsonpointer from 'jsonpointer';
-
 const asjon = new AJSON()
   .use(defaultDecoders);
 
@@ -19,9 +17,9 @@ test('prim values', t => {
 test('objects', t => {
   t.deepEqual(asjon.decode(['a', 'b', 'c']), ['a', 'b', 'c'], 'Array');
   t.deepEqual(asjon.decode([]), [], 'Array (empty)');
-  t.deepEqual(asjon.decode({foo: 'bar', 'x-y': 'z'}), { foo: 'bar', 'x-y': 'z'}, 'Object');
-  t.deepEqual(asjon.decode({ $set: [1, 2, 3]}), new Set([1, 2, 3]), 'Set');
-  t.deepEqual(asjon.decode({ $map: [['a', 'b']]}), new Map([['a', 'b']]), 'Map');
+  t.deepEqual(asjon.decode({ foo: 'bar', 'x-y': 'z' }), { foo: 'bar', 'x-y': 'z'}, 'Object');
+  t.deepEqual(asjon.decode({ $set: [1, 2, 3] }), new Set([1, 2, 3]), 'Set');
+  t.deepEqual(asjon.decode({ $map: [['a', 'b']] }), new Map([['a', 'b']]), 'Map');
 });
 
 test('special values', t => {
@@ -59,7 +57,6 @@ test('buffer', t => {
 });
 
 test('self referential', t => {
-
   const self = asjon.decode({ a: { $ref: '#'} });
   t.is(self, self.a, 'object');
   t.deepEqual(self, { a: self });

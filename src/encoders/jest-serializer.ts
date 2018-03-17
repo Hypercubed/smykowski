@@ -1,4 +1,4 @@
-import { Path, DecendFunction } from '../types';
+import { Path } from '../types';
 
 export const jestSerializer = () => jestReplacer;
 
@@ -12,7 +12,7 @@ const JS_TYPE = '__$t__';
 const JS_VALUE = '__$v__';
 const JS_VF = '__$f__';
 
-function jestReplacer(value: any, path: Path, decend: DecendFunction): any {
+function jestReplacer(value: any): any {
   // NaN cannot be in a switch statement, because NaN !== NaN.
   if (Number.isNaN(value)) {
     return {[JS_TYPE]: 'n'};
@@ -37,10 +37,10 @@ function jestReplacer(value: any, path: Path, decend: DecendFunction): any {
       return {[JS_TYPE]: 'r', [JS_VALUE]: value.source, [JS_VF]: value.flags};
 
     case Set:
-      return {[JS_TYPE]: 's', [JS_VALUE]: decend(Array.from(value), path)};
+      return {[JS_TYPE]: 's', [JS_VALUE]: Array.from(value)};
 
     case Map:
-      return {[JS_TYPE]: 'm', [JS_VALUE]: decend(Array.from(value), path)};
+      return {[JS_TYPE]: 'm', [JS_VALUE]: Array.from(value)};
 
     case Buffer:
       return {[JS_TYPE]: 'b', [JS_VALUE]: value.toString('latin1')};

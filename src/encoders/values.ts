@@ -1,4 +1,4 @@
-import { Path, DecendFunction } from '../types';
+import { Path } from '../types';
 
 export const specialNumbers = () => {
   return v => {
@@ -21,9 +21,9 @@ export const symbolValue = () => {
 };
 
 export const toJSON = () => {
-  return (v: any, path: Path, decend: DecendFunction) => {
+  return (v: any, path: Path) => {
     if (v !== null && typeof v.toJSON === 'function') {
-      return decend(v.toJSON(), path);
+      return v.toJSON();
     }
     return v;
   };
