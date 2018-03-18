@@ -65,11 +65,11 @@ test('self referential', t => {
   t.is(arr, arr[0], 'array');
   t.deepEqual(arr, [arr]);
 
-  /* const map: Map<string, any> = asjon.decode({ $map: [['self', { $ref: '#'}]]});
-  t.is(map, map.get('self'), 'array');
+  /* const map = asjon.decode({ $map: [['self', { $ref: '#' }]]});
+  t.deepEqual(Array.from(map), [['self', map]]);
 
   const set: Set<any> = asjon.decode({ $set: [{ $ref: '#' }, 42]});
-  t.is(map, set.values[0], 'array'); */
+  t.is(Array.from(set), [set, 42], 'array'); */
 });
 
 test('references', t => {
@@ -78,4 +78,11 @@ test('references', t => {
 
   const b = asjon.decode({ a: 1, b: { c: {}}, c: { $ref: '#/b/c'}});
   t.deepEqual(b, { a: 1, b: { c: {}}, c: b.b.c });
+
+  const c = { string: 'this is c' };
+  const map = asjon.decode({ $map: [['c', c], ['c2', { $ref: '#/$map/0/1' }]]});
+  t.deepEqual(Array.from(map), [['c', c], ['c2', c]]);
+
+  const set = asjon.decode({ $set: [c, [{ $ref: '#/$set/0' }]] });
+  t.deepEqual(Array.from(set), [c, [c]]);
 });

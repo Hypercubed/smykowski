@@ -139,6 +139,11 @@ test('references', t => {
   const b: any = {a: 1, b: { c: {} }};
   b.c = b.b.c;
   t.deepEqual(asjon.encode(b), { a: 1, b: { c: {}}, c: { $ref: '#/b/c'}});
+
+  const c = { string: 'this is c' };
+  t.deepEqual(asjon.encode(new Map([['c', c], ['c2', c]])), { $map: [['c', c], ['c2', { $ref: '#/$map/0/1' }]]});
+
+  t.deepEqual(asjon.encode(new Set([c, [c]])), { $set: [c, [{ $ref: '#/$set/0' }]] });
 });
 
 test('toJSON', t => {
