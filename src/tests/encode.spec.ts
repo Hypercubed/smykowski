@@ -52,25 +52,6 @@ test('objects with special values', t => {
     { $map: [['a', { $date: '2001-09-09T01:46:40.000Z' }]]}, 'Map');
 });
 
-test('self referential', t => {
-  const self: any = {};
-  self.a = self;
-  t.deepEqual(asjon.encode(self), { a: { $ref: '#'} }, 'object');
-
-  const arr: any[] = [];
-  arr[0] = arr;
-  t.deepEqual(asjon.encode(arr), [{ $ref: '#' }], 'array');
-
-  const map = new Map();
-  map.set('self', map);
-  t.deepEqual(asjon.encode(map), { $map: [['self', { $ref: '#'}]]}, 'Map');
-
-  const set = new Set();
-  set.add(set);
-  set.add(42);
-  t.deepEqual(asjon.encode(set), { $set: [{ $ref: '#' }, 42]}, 'Set');
-});
-
 test('deep', t => {
   const obj = {
     string: 'a_string',
@@ -131,6 +112,25 @@ test('all', t => {
   t.snapshot(asjon.encode(obj));
 });
 
+test('self referential', t => {
+  const self: any = {};
+  self.a = self;
+  t.deepEqual(asjon.encode(self), { a: { $ref: '#'} }, 'object');
+
+  const arr: any[] = [];
+  arr[0] = arr;
+  t.deepEqual(asjon.encode(arr), [{ $ref: '#' }], 'array');
+
+  const map = new Map();
+  map.set('self', map);
+  t.deepEqual(asjon.encode(map), { $map: [['self', { $ref: '#'}]]}, 'Map');
+
+  const set = new Set();
+  set.add(set);
+  set.add(42);
+  t.deepEqual(asjon.encode(set), { $set: [{ $ref: '#' }, 42]}, 'Set');
+});
+
 test('references', t => {
   const a: any = {a: 1, b: {}};
   a.c = a.b;
@@ -146,5 +146,44 @@ test('toJSON', t => {
   t.deepEqual(asjon.encode(p), {
     '@@Person': 'Benton Chase',
     dob: { $date: '2001-09-09T01:46:40.000Z' }
+  });
+});
+
+test('fail on circular structure without processor', t => {
+  const a = new AJSON();
+
+  const me: any = {
+    name: 'Kris',
+    father: {name: 'Bill'},
+    mother: {name: 'Karen'}
+  };
+  me.father.son = me;
+
+  try {
+    a.encode(me);
+  } catch (e) {
+    if (e.message.includes('Converting circular structure to JSON')) {
+      t.pass();
+    } else {
+      t.fail();
+    }
+  }
+});
+
+test('do not fail on references', t => {
+  const a = new AJSON();
+
+  const me: any = {
+    name: 'Kris',
+    father: {name: 'Bill'},
+    mother: {name: 'Karen'}
+  };
+  me.parents = [me.father, me.mother];
+
+  t.deepEqual(a.encode(me), {
+    name: 'Kris',
+    father: {name: 'Bill'},
+    mother: {name: 'Karen'},
+    parents: [{name: 'Bill'}, {name: 'Karen'}],
   });
 });

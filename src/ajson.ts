@@ -5,20 +5,31 @@ export class AJSON {
   private _decoders: Decoder[] = [];
 
   encode(value: any): any {
+    const stack: any = [];
     const encoders = this._encoders.map(p => p());
     return get(value, []);
 
     function get(v: any, path: Path): any {
       v = encoders.reduce((acc, fn) => fn(acc, path), v);
       const type = Object.prototype.toString.call(v);
-      if (type === '[object Array]') {
-        return v.map((_, i) => get(_, path.concat(i)));
-      }
-      if (type === '[object Object]') {
-        return Object.keys(v).reduce((acc, key) => {
-          acc[key] = get(v[key], path.concat([key]));
-          return acc;
-        }, {});
+      if (type === '[object Array]' || type === '[object Object]') {
+        if (stack.includes(v)) {
+          throw new Error('Converting circular structure to JSON');
+        }
+        stack.push(v);
+
+        switch (type) {
+          case '[object Array]':
+            v = v.map((_, i) => get(_, path.concat(i)));
+            break;
+          case '[object Object]':
+            v = Object.keys(v).reduce((acc, key) => {
+              acc[key] = get(v[key], path.concat([key]));
+              return acc;
+            }, {});
+        }
+
+        stack.pop();
       }
       return v;
     }
@@ -29,15 +40,15 @@ export class AJSON {
     return get(value, []);
 
     function get(v: any, path: Path): any {
-      const type = Object.prototype.toString.call(v);
-      if (type === '[object Array]') {
-        v = v.map((_, i) => get(_, path.concat(i)));
-      }
-      if (type === '[object Object]') {
-        v = Object.keys(v).reduce((acc, key) => {
-          acc[key] = get(v[key], path.concat([key]));
-          return acc;
-        }, {});
+      switch (Object.prototype.toString.call(v)) {
+        case '[object Array]':
+          v = v.map((_, i) => get(_, path.concat(i)));
+          break;
+        case '[object Object]':
+          v = Object.keys(v).reduce((acc, key) => {
+            acc[key] = get(v[key], path.concat([key]));
+            return acc;
+          }, {});
       }
       return decoders.reduce((acc, fn) => fn(acc, path), v);
     }
