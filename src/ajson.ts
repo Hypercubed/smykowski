@@ -14,7 +14,7 @@ export class AJSON {
       const type = Object.prototype.toString.call(v);
       if (type === '[object Array]' || type === '[object Object]') {
         if (stack.includes(v)) {
-          throw new Error('Converting circular structure to JSON');
+          throw new Error('Converting circular structure to JSON, consider using the jsonPointer encoder');
         }
         stack.push(v);
 
