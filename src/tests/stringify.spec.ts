@@ -1,7 +1,8 @@
 import { test } from 'ava';
+import * as jsonpointer from 'json-pointer';
+
 import { 
   AJSON,
-  // recurseArrays,
   defaultEncoders
 } from '../';
 
@@ -51,18 +52,23 @@ test('demo', t => {
     };
   };
 
-  const _recurseArrays = () => {
-    return (value, path, next) => {
-      if (Array.isArray(value)) {
-        return value.map((v, i) => next(v, [...path, i]));
+  const jsonPointer = () => {
+    const repeated = new WeakMap();
+    return (v, path) => {
+      if (v !== null && typeof v === 'object') {
+        if (repeated.has(v)) {
+          return { $ref: '#' + jsonpointer.compile(repeated.get(v)) };
+        }
+        repeated.set(v, path);
       }
-      return value;
+      return v;
     };
   };
 
   const a = new AJSON()
-    // .addEncoder(recurseArrays)
+    .addEncoder(jsonPointer)
     .addEncoder(foo);
 
-  t.snapshot(a.stringify([1, 2, 3]));
+  const arr = [1, 2, 3];
+  t.snapshot(a.stringify([arr, arr]));
 });

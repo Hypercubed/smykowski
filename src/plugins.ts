@@ -1,26 +1,25 @@
 import { AJSON } from './ajson';
 import { 
-  jsonPointer,
-  // recurseObjects, recurseArrays,
+  encodeJSONPointer,
   encodeMap, encodeSet,
-  specialNumbers, undefinedValue, regexpValue, dateValue,
-  symbolValue, toJSON, bufferValue
+  encodeSpecialNumbers, encodeUndefined, encodeRegexps, encodeDates,
+  encodeSymbols, toJSON, encodeBuffers
 } from './encoders';
 import {
-  decodeSpecialNumbers, decodeSymbolValue, decodeMap, decodeSet, decodeBufferValue, 
-  decodeUndefinedValue, decodeRegexValue, decodeDateValue,
+  decodeSpecialNumbers, decodeSymbols, decodeMap, decodeSet, decodeBuffers, 
+  decodeUndefined, decodeRegexps, decodeDates,
   decodeJSONPointers
 } from './decoders';
 
 export function defaultEncoders(ajson: AJSON): AJSON {
   return ajson
-    .addEncoder(jsonPointer)
-    .addEncoder(bufferValue)
-    .addEncoder(specialNumbers)
-    .addEncoder(undefinedValue)
-    .addEncoder(regexpValue)
-    .addEncoder(dateValue)
-    .addEncoder(symbolValue)
+    .addEncoder(encodeJSONPointer)
+    .addEncoder(encodeBuffers)
+    .addEncoder(encodeSpecialNumbers)
+    .addEncoder(encodeUndefined)
+    .addEncoder(encodeRegexps)
+    .addEncoder(encodeDates)
+    .addEncoder(encodeSymbols)
     .addEncoder(encodeMap)
     .addEncoder(encodeSet)
     .addEncoder(toJSON);
@@ -29,11 +28,11 @@ export function defaultEncoders(ajson: AJSON): AJSON {
 export function defaultDecoders(ajson: AJSON): AJSON {
   return ajson
     .addDecoder(decodeSpecialNumbers)
-    .addDecoder(decodeUndefinedValue)
-    .addDecoder(decodeRegexValue)
-    .addDecoder(decodeDateValue)
-    .addDecoder(decodeSymbolValue)
-    .addDecoder(decodeBufferValue)
+    .addDecoder(decodeUndefined)
+    .addDecoder(decodeRegexps)
+    .addDecoder(decodeDates)
+    .addDecoder(decodeSymbols)
+    .addDecoder(decodeBuffers)
     .addDecoder(decodeMap)
     .addDecoder(decodeSet)
     .addDecoder(decodeJSONPointers);

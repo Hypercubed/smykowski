@@ -1,7 +1,7 @@
 import { Path } from '../types';
 
-export const specialNumbers = () => {
-  return v => {
+export const encodeSpecialNumbers = () => {
+  return (v: any) => {
     if (typeof v === 'number') {
       if (Object.is(v, -0)) return { $numberDecimal: '-0' };
       if (Number.isNaN(v)) return { $numberDecimal: 'NaN' };
@@ -11,8 +11,8 @@ export const specialNumbers = () => {
   };
 };
 
-export const symbolValue = () => {
-  return v => {
+export const encodeSymbols = () => {
+  return (v: any) => {
     if (typeof v === 'symbol') {
       return { $symbol: String(v).slice(7, -1)};
     }
@@ -20,16 +20,7 @@ export const symbolValue = () => {
   };
 };
 
-export const toJSON = () => {
-  return (v: any, path: Path) => {
-    if (v !== null && typeof v.toJSON === 'function') {
-      return v.toJSON();
-    }
-    return v;
-  };
-};
-
-export const bufferValue = () => {
+export const encodeBuffers = () => {
   return (v: any) => {
     if (v instanceof Buffer) {
       return { $binary: v.toString('base64') };

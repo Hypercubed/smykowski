@@ -1,7 +1,7 @@
 import * as jsonpointer from 'json-pointer';
 import { Path } from '../types';
 
-export const jsonPointer = () => {
+export const encodeJSONPointer = () => {
   const repeated = new WeakMap();
   return (v, path: Path) => {
     if (v !== null && typeof v === 'object') {

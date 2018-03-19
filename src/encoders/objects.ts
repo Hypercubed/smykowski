@@ -1,7 +1,5 @@
-import { Path } from '../types';
-
 export const encodeMap = () => {
-  return (v: any, path: Path) => {
+  return (v: any) => {
     if (v instanceof Map) {
       return { $map: Array.from(v) };
     }
@@ -10,9 +8,18 @@ export const encodeMap = () => {
 };
 
 export const encodeSet = () => {
-  return (v: any, path: Path) => {
+  return (v: any) => {
     if (v instanceof Set) {
       return { $set: Array.from(v) };
+    }
+    return v;
+  };
+};
+
+export const toJSON = () => {
+  return (v: any) => {
+    if (v !== null && typeof v.toJSON === 'function') {
+      return v.toJSON();
     }
     return v;
   };

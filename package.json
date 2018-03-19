@@ -27,7 +27,7 @@
     "clean:docs": "rimraf docs",
     "lint": "tslint --project .",
     "unit": "nyc --silent ava",
-    "check-coverage": "nyc check-coverage --lines 100 --functions 100 --branches 90",
+    "check-coverage": "nyc check-coverage --lines 100 --functions 100 --branches 100",
     "test": "npm-run-all lint build:main unit check-coverage",
     "watch": "npm run build && concurrently -r --kill-others 'npm run --silent build -- -w' 'sleepms 2000 && ava ./dist/*.spec.js --watch'",
     "cov": "npm-run-all build unit html-coverage && opn coverage/index.html",

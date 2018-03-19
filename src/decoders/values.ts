@@ -7,7 +7,7 @@ export const decodeSpecialNumbers = () => {
   };
 };
 
-export const decodeSymbolValue = () => {
+export const decodeSymbols = () => {
   return (v: any) => {
     if (v !== null && typeof v === 'object' && v.hasOwnProperty('$symbol')) {
       return Symbol(v.$symbol);
@@ -25,7 +25,7 @@ export const decodeMap = () => {
   };
 };
 
-export const decodeBufferValue = () => {
+export const decodeBuffers = () => {
   return (v: any) => {
     if (v !== null && typeof v === 'object' && v.hasOwnProperty('$binary')) {
       return new Buffer(v.$binary, 'base64');

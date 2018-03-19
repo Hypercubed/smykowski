@@ -1,4 +1,4 @@
-export const decodeUndefinedValue = () => {
+export const decodeUndefined = () => {
   return (v: any) => {
     if (v !== null && typeof v === 'object' && v.hasOwnProperty('$undefined')) {
       return undefined;
@@ -7,7 +7,7 @@ export const decodeUndefinedValue = () => {
   };
 };
 
-export const decodeRegexValue = () => {
+export const decodeRegexps = () => {
   return (v: any) => {
     if (v !== null && typeof v === 'object' && v.hasOwnProperty('$regex')) {
       return new RegExp(v.$regex, v.$options);
@@ -16,7 +16,7 @@ export const decodeRegexValue = () => {
   };
 };
 
-export const decodeDateValue = () => {
+export const decodeDates = () => {
   return (v: any) => {
     if (v !== null && typeof v === 'object' && v.hasOwnProperty('$date')) {
       return new Date(v.$date);

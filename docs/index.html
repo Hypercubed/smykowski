@@ -65,22 +65,13 @@
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
 				<h1 id="ajson">AJSON</h1>
-				<p>Advanced JSON. Like <code>JSON.stringify</code> with plug-ins.</p>
+				<p>Advanced JSON. Like <code>JSON.stringify</code> and <code>JSON.parse</code> with plug-ins.</p>
 				<h2 id="usage">Usage</h2>
-				<pre><code class="lang-js"><span class="hljs-keyword">import</span> {
-  AJSON,
-  jsonPointer,
-  recurseObjects, recurseArrays,
-  specialNumbers, dateValue, symbolValue
-} <span class="hljs-keyword">from</span> <span class="hljs-string">'ajson'</span>;
+				<pre><code class="lang-js"><span class="hljs-keyword">import</span> {  AJSON, defaultEncoders, defaultDecoders } <span class="hljs-keyword">from</span> <span class="hljs-string">'ajson'</span>;
 
 <span class="hljs-keyword">const</span> asjon = <span class="hljs-keyword">new</span> AJSON()
-  .addEncoder(jsonPointer)
-  .addEncoder(recurseObjects)
-  .addEncoder(recurseArrays)
-  .addEncoder(specialNumbers)
-  .addEncoder(dateValue)
-  .addEncoder(symbolValue);
+  .use(defaultEncoders)
+  .use(defaultDecoders);
 
 <span class="hljs-keyword">const</span> obj = {
   <span class="hljs-attr">_id</span>: <span class="hljs-string">'5aa882d3638a0f580d92c677'</span>,
@@ -110,7 +101,8 @@
   ]
 };
 
-asjon.stringify(obj, <span class="hljs-literal">null</span>, <span class="hljs-number">2</span>);
+<span class="hljs-keyword">const</span> stringified = asjon.stringify(obj, <span class="hljs-literal">null</span>, <span class="hljs-number">2</span>);
+<span class="hljs-built_in">console</span>.log(stringified);
 </code></pre>
 				<p>yields:</p>
 				<pre><code class="lang-json">{
@@ -159,19 +151,18 @@ asjon.stringify(obj, <span class="hljs-literal">null</span>, <span class="hljs-n
         <span class="hljs-attr">"$numberDecimal"</span>: <span class="hljs-string">"NaN"</span>
       },
       <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Kaufman Price"</span>
-    },
-    {
-      <span class="hljs-attr">"$ref"</span>: <span class="hljs-string">"#"</span>
-    },
-    {
-      <span class="hljs-attr">"$ref"</span>: <span class="hljs-string">"#/friends/[0]"</span>
     }
   ]
 }
 </code></pre>
+				<p>then</p>
+				<pre><code class="lang-ts"><span class="hljs-keyword">const</span> parsed = asjon.parse(stringified);
+<span class="hljs-built_in">console</span>.log(parsed);
+</code></pre>
+				<p>returns the a new object &quot;equal&quot; to the first.</p>
 				<h2 id="plugins">Plugins</h2>
-				<p>Plugins are functions that take no arguments and return a &quot;replacer&quot; function with the signature <code>(value: any, path: Array&lt;string | number&gt;, next: Function)</code>.  The &quot;replacer&quot; function should return the encoded JS object that will continue to be processed by additional plugins.  The <code>path</code> value and the <code>next</code> callback are used to act recursively.</p>
-				<p>For example, a simple plugin that replaces all values that are not arrays with <code>&quot;foo&quot;</code>:</p>
+				<p>In <code>ajson</code> we have a concept of encoders, decoders, and plugins.  Encoders and decoders are functions that take no arguments and return a &quot;replacer&quot; or &quot;reviver&quot; function with the signature <code>(value: any, path: Array&lt;string | number&gt;)</code>.  For encoders the &quot;replacer&quot; function should return the encoded JS object that will continue to be processed by additional plugins.  For decoders the &quot;reviver&quot; function returns the decoded JS object.  The <code>path</code> value may be user to write more advanced encoders/decoders.</p>
+				<p>For example, a very simple encoder that replaces all values that are not arrays with <code>&quot;foo&quot;</code>:</p>
 				<pre><code class="lang-ts"><span class="hljs-keyword">const</span> foo = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
   <span class="hljs-keyword">const</span> FOO = <span class="hljs-string">'foo'</span>;
   <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span> {
@@ -179,36 +170,68 @@ asjon.stringify(obj, <span class="hljs-literal">null</span>, <span class="hljs-n
   };
 };
 </code></pre>
-				<p>A plugin that recurses arrays:</p>
-				<pre><code class="lang-ts"><span class="hljs-keyword">const</span> recurseArrays = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
-  <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params">value, path, next</span>) =&gt;</span> {
-    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">Array</span>.isArray(value)) <span class="hljs-keyword">return</span> value.map(<span class="hljs-function">(<span class="hljs-params">v, i</span>) =&gt;</span> next(v, [...path, i]));
+				<p>A more complex eample is an encoder that replaces duplicate values with JSON pointers:</p>
+				<pre><code class="lang-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> jsonPointer = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+  <span class="hljs-keyword">const</span> repeated = <span class="hljs-keyword">new</span> WeakMap();
+  <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params">v, path: Path</span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (v !== <span class="hljs-literal">null</span> &amp;&amp; <span class="hljs-keyword">typeof</span> v === <span class="hljs-string">'object'</span>) {
+      <span class="hljs-keyword">if</span> (repeated.has(v)) {
+        <span class="hljs-keyword">return</span> { $ref: <span class="hljs-string">'#'</span> + jsonpointer.compile(repeated.get(v)) };
+      }
+      repeated.set(v, path);
+    }
     <span class="hljs-keyword">return</span> v;
   };
 };
 </code></pre>
-				<p>Note the use of the <code>next</code> callback to update nested values recursively.  The order of the plugins does matter.  In this case <code>recurseArrays</code> should come before <code>foo</code>:</p>
+				<p>The order of the plugins does matter.  In this case <code>jsonPointer</code> should come last:</p>
 				<pre><code class="lang-ts"><span class="hljs-keyword">const</span> asjon = <span class="hljs-keyword">new</span> AJSON()
-  .addEncoder(recurseArrays)
-  .addEncoder(foo);
+  .addEncoder(foo)
+  .addEncoder(jsonPointer);
 
-asjon.stringify([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]);
+<span class="hljs-keyword">const</span> arr = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];
+asjon.stringify([arr, arr]);
 </code></pre>
 				<p>yields:</p>
-				<pre><code class="lang-json">[<span class="hljs-string">"foo"</span>,<span class="hljs-string">"foo"</span>,<span class="hljs-string">"foo"</span>]
+				<pre><code class="lang-json">[[<span class="hljs-string">"foo"</span>,<span class="hljs-string">"foo"</span>,<span class="hljs-string">"foo"</span>],{<span class="hljs-attr">"$ref"</span>:<span class="hljs-string">"foo"</span>}]
 </code></pre>
+				<p>Decoders work similarly using the <code>addDecoder</code> method.  A plugin is a set of encoders and/or decoders like so:</p>
+				<pre><code class="lang-ts"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">myPlugin</span>(<span class="hljs-params">_: AJSON</span>) </span>{
+  <span class="hljs-keyword">return</span> _
+    .addEncoder(recurseArrays)
+    .addEncoder(foo)
+    .addDecoder(myDecoder);
+}
+
+<span class="hljs-keyword">const</span> asjon = <span class="hljs-keyword">new</span> AJSON()
+  .use(myPlugin);
+</code></pre>
+				<p>Note: <code>use(fn)</code> is sugar for <code>fn(asjon)</code>.</p>
 				<h2 id="supplied-plugins">Supplied plugins</h2>
+				<h3 id="defaultencoders"><code>defaultEncoders</code></h3>
 				<ul>
-					<li><code>jsonPointer</code>: Replaces cycles and repeated objects with <a href="https://tools.ietf.org/html/rfc6901">JSON Pointers</a>.</li>
-					<li><code>recurseObjects</code>: Recurses plain JS objects.</li>
-					<li><code>recurseArrays</code>: Recurses plain JS arrays.</li>
-					<li><code>recurseMap</code>: Recurses plain Maps returning the result in the form of <code>{ $map: [[...]] }</code></li>
-					<li><code>recurseSet</code>: Recurses plain Sets returning the result in the form of <code>{ $set: [...] }</code></li>
-					<li><code>specialNumbers</code>: Returns special numeric values (<code>-0</code>, <code>NaN</code> and +/-<code>Infinity</code>) as a strict <a href="https://docs.mongodb.com/manual/reference/mongodb-extended-json/#numberdecimal">MongoDB Extended JSON numberDecimal</a> (<code>{ $numberDecimal: &quot;...&quot; }</code>).</li>
-					<li><code>undefinedValue</code>: Returns undefined values as a strict <a href="https://docs.mongodb.com/manual/reference/mongodb-extended-json/#undefined-type">MongoDB Extended JSON undefined</a> (<code>{ $undefined: true }</code>).</li>
-					<li><code>regexpValue</code>: Returns regular expression values as a strict <a href="https://docs.mongodb.com/manual/reference/mongodb-extended-json/#regular-expression">MongoDB Extended JSON Regular Expressions</a> (<code>{ &quot;$regex&quot;: &quot;...&quot;, &quot;$options&quot;: &quot;...&quot; }</code>).</li>
-					<li><code>dateValue</code>: Returns dates as a strict <a href="https://docs.mongodb.com/manual/reference/mongodb-extended-json/#date">MongoDB Extended JSON Regular Date</a> (<code>{ &quot;$date&quot;: &quot;...&quot; }</code>).</li>
-					<li><code>symbolValue</code>: Returns symbols in the form of <code>{ $symbol: &quot;...&quot; }</code></li>
+					<li><code>encodeJSONPointer</code>: Replaces cycles and repeated objects with <a href="https://tools.ietf.org/html/rfc6901">JSON Pointers</a>.</li>
+					<li><code>encodeBuffers</code>: Encodes buffers n the form of <code>{ $binary: &#39;...&#39; }</code> where the string is the Base64 encoded value.</li>
+					<li><code>encodeMap</code>: Encodes Maps returning the result in the form of <code>{ $map: [[...]] }</code></li>
+					<li><code>encodeSet</code>: Encodes plain Sets returning the result in the form of <code>{ $set: [...] }</code></li>
+					<li><code>encodeSpecialNumbers</code>: Returns special numeric values (<code>-0</code>, <code>NaN</code> and +/-<code>Infinity</code>) as a strict <a href="https://docs.mongodb.com/manual/reference/mongodb-extended-json/#numberdecimal">MongoDB Extended JSON numberDecimal</a> (<code>{ $numberDecimal: &quot;...&quot; }</code>).</li>
+					<li><code>encodeUndefined</code>: Returns undefined values as a strict <a href="https://docs.mongodb.com/manual/reference/mongodb-extended-json/#undefined-type">MongoDB Extended JSON undefined</a> (<code>{ $undefined: true }</code>).</li>
+					<li><code>encodeRegexps</code>: Returns regular expression values as a strict <a href="https://docs.mongodb.com/manual/reference/mongodb-extended-json/#regular-expression">MongoDB Extended JSON Regular Expressions</a> (<code>{ &quot;$regex&quot;: &quot;...&quot;, &quot;$options&quot;: &quot;...&quot; }</code>).</li>
+					<li><code>encodeDates</code>: Returns dates as a strict <a href="https://docs.mongodb.com/manual/reference/mongodb-extended-json/#date">MongoDB Extended JSON Regular Date</a> (<code>{ &quot;$date&quot;: &quot;...&quot; }</code>).</li>
+					<li><code>encodeSymbols</code>: Returns symbols in the form of <code>{ $symbol: &quot;...&quot; }</code></li>
+					<li><code>toJSON</code>: Returns the result of the <code>toJSON</code> method for objects whose <code>toJSON</code> property is a function</li>
+				</ul>
+				<h3 id="defaultdecoders"><code>defaultDecoders</code></h3>
+				<ul>
+					<li><code>decodeSpecialNumbers</code>: Decodes special numeric values.</li>
+					<li><code>decodeUndefined</code>: Decodes <code>undefined</code>.</li>
+					<li><code>decodeRegexps</code>: Decodes <code>Regexp</code> values.</li>
+					<li><code>decodeDates</code>: Decodes <code>Date</code>s.</li>
+					<li><code>decodeSymbols</code>: Decodes <code>Symbol</code>s.</li>
+					<li><code>decodeMap</code>: Decodes <code>Map</code>s.</li>
+					<li><code>decodeSet</code>: Decodes <code>Set</code>s.</li>
+					<li><code>decodeBuffers</code>: Decodes <code>Buffer</code>.</li>
+					<li><code>decodeJSONPointers</code>: Decodes JSON pointers.</li>
 				</ul>
 				<h2 id="alternatives">Alternatives</h2>
 				<ul>
@@ -234,16 +257,19 @@ asjon.stringify([<span class="hljs-number">1</span>, <span class="hljs-number">2
 						<a href="classes/ajson.html" class="tsd-kind-icon">AJSON</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-is-external">
-						<a href="globals.html#iget" class="tsd-kind-icon">IGet</a>
+						<a href="globals.html#decoder" class="tsd-kind-icon">Decoder</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-is-external">
+						<a href="globals.html#encoder" class="tsd-kind-icon">Encoder</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-is-external">
 						<a href="globals.html#path" class="tsd-kind-icon">Path</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-is-external">
-						<a href="globals.html#processor" class="tsd-kind-icon">Processor</a>
+						<a href="globals.html#replacer" class="tsd-kind-icon">Replacer</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-is-external">
-						<a href="globals.html#replacer" class="tsd-kind-icon">Replacer</a>
+						<a href="globals.html#reviver" class="tsd-kind-icon">Reviver</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#js_type" class="tsd-kind-icon">JS_<wbr>TYPE</a>
@@ -254,14 +280,71 @@ asjon.stringify([<span class="hljs-number">1</span>, <span class="hljs-number">2
 					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#js_vf" class="tsd-kind-icon">JS_<wbr>VF</a>
 					</li>
-					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#buffervalue" class="tsd-kind-icon">buffer<wbr>Value</a>
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#copy" class="tsd-kind-icon">copy</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#datevalue" class="tsd-kind-icon">date<wbr>Value</a>
+						<a href="globals.html#decodebuffers" class="tsd-kind-icon">decode<wbr>Buffers</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#decodedates" class="tsd-kind-icon">decode<wbr>Dates</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#decodejsonpointers" class="tsd-kind-icon">decodeJSONPointers</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#decodemap" class="tsd-kind-icon">decode<wbr>Map</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#decoderegexps" class="tsd-kind-icon">decode<wbr>Regexps</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#decodeset" class="tsd-kind-icon">decode<wbr>Set</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#decodespecialnumbers" class="tsd-kind-icon">decode<wbr>Special<wbr>Numbers</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#decodesymbols" class="tsd-kind-icon">decode<wbr>Symbols</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#decodeundefined" class="tsd-kind-icon">decode<wbr>Undefined</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#defaultdecoders" class="tsd-kind-icon">default<wbr>Decoders</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#defaultencoders" class="tsd-kind-icon">default<wbr>Encoders</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#encodebuffers" class="tsd-kind-icon">encode<wbr>Buffers</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#encodedates" class="tsd-kind-icon">encode<wbr>Dates</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#encodejsonpointer" class="tsd-kind-icon">encodeJSONPointer</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#encodemap" class="tsd-kind-icon">encode<wbr>Map</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#encoderegexps" class="tsd-kind-icon">encode<wbr>Regexps</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#encodeset" class="tsd-kind-icon">encode<wbr>Set</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#encodespecialnumbers" class="tsd-kind-icon">encode<wbr>Special<wbr>Numbers</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#encodesymbols" class="tsd-kind-icon">encode<wbr>Symbols</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#encodeundefined" class="tsd-kind-icon">encode<wbr>Undefined</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#ispointerobject" class="tsd-kind-icon">is<wbr>Pointer<wbr>Object</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#jestreplacer" class="tsd-kind-icon">jest<wbr>Replacer</a>
@@ -270,34 +353,7 @@ asjon.stringify([<span class="hljs-number">1</span>, <span class="hljs-number">2
 						<a href="globals.html#jestserializer" class="tsd-kind-icon">jest<wbr>Serializer</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#jsonpointer" class="tsd-kind-icon">json<wbr>Pointer</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#recursearrays" class="tsd-kind-icon">recurse<wbr>Arrays</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#recursemap" class="tsd-kind-icon">recurse<wbr>Map</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#recurseobjects" class="tsd-kind-icon">recurse<wbr>Objects</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#recurseset" class="tsd-kind-icon">recurse<wbr>Set</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#regexpvalue" class="tsd-kind-icon">regexp<wbr>Value</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#specialnumbers" class="tsd-kind-icon">special<wbr>Numbers</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#symbolvalue" class="tsd-kind-icon">symbol<wbr>Value</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#tojson" class="tsd-kind-icon">toJSON</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#undefinedvalue" class="tsd-kind-icon">undefined<wbr>Value</a>
 					</li>
 				</ul>
 			</nav>

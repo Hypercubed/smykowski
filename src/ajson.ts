@@ -54,11 +54,11 @@ export class AJSON {
     }
   }
 
-  stringify(value: any, replacer?, space?: string | number | undefined) {
+  stringify(value: any, replacer?: (key: string, value: any) => any, space?: string | number | undefined) {
     return JSON.stringify(this.encode(value), replacer, space);
   }
 
-  parse(value: string, reviver?) {
+  parse(value: string, reviver?: (key: any, value: any) => any) {
     return this.decode(JSON.parse(value, reviver));
   }
 

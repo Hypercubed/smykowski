@@ -1,5 +1,3 @@
-import { Path } from '../types';
-
 export const jestSerializer = () => jestReplacer;
 
 /* 

@@ -1,6 +1,6 @@
 # AJSON
 
-Advanced JSON. Like `JSON.stringify` with plug-ins.
+Advanced JSON. Like `JSON.stringify` and `JSON.parse` with plug-ins.
 
 ## Usage
 
@@ -108,9 +108,9 @@ returns the a new object "equal" to the first.
 
 ## Plugins
 
-In `ajson` we have a concept of encoders, decoders, and plugins.  Encoders and decoders are functions that take no arguments and return a "replacer" or "reviver" function with the signature `(value: any, path: Array<string | number>, next: Function)`.  In encoders the "replacer" function should return the encoded JS object that will continue to be processed by additional plugins.  For decoders the "reviver" function returns the decoded JS object.  The `path` value and the `next` callback are used to act recursively.
+In `ajson` we have a concept of encoders, decoders, and plugins.  Encoders and decoders are functions that take no arguments and return a "replacer" or "reviver" function with the signature `(value: any, path: Array<string | number>)`.  For encoders the "replacer" function should return the encoded JS object that will continue to be processed by additional plugins.  For decoders the "reviver" function returns the decoded JS object.  The `path` value may be user to write more advanced encoders/decoders.
 
-For example, a simple encoder that replaces all values that are not arrays with `"foo"`:
+For example, a very simple encoder that replaces all values that are not arrays with `"foo"`:
 
 ```ts
 const foo = () => {
@@ -121,34 +121,41 @@ const foo = () => {
 };
 ```
 
-A plugin that recurses arrays:
+A more complex eample is an encoder that replaces duplicate values with JSON pointers:
 
 ```ts
-const recurseArrays = () => {
-  return (value, path, next) => {
-    if (Array.isArray(value)) return value.map((v, i) => next(v, [...path, i]));
+export const jsonPointer = () => {
+  const repeated = new WeakMap();
+  return (v, path: Path) => {
+    if (v !== null && typeof v === 'object') {
+      if (repeated.has(v)) {
+        return { $ref: '#' + jsonpointer.compile(repeated.get(v)) };
+      }
+      repeated.set(v, path);
+    }
     return v;
   };
 };
 ```
 
-Note the use of the `next` callback to update nested values recursively.  The order of the plugins does matter.  In this case `recurseArrays` should come before `foo`:
+The order of the plugins does matter.  In this case `jsonPointer` should come last:
 
 ```ts
 const asjon = new AJSON()
-  .addEncoder(recurseArrays)
-  .addEncoder(foo);
+  .addEncoder(foo)
+  .addEncoder(jsonPointer);
 
-asjon.stringify([1, 2, 3]);
+const arr = [1, 2, 3];
+asjon.stringify([arr, arr]);
 ```
 
 yields:
 
 ```json
-["foo","foo","foo"]
+[["foo","foo","foo"],{"$ref":"foo"}]
 ```
 
-Decoders work similarly using the `addDecoder` method.  A plugin is just a set of encoders and/or decoders like so:
+Decoders work similarly using the `addDecoder` method.  A plugin is a set of encoders and/or decoders like so:
 
 ```ts
 function myPlugin(_: AJSON) {
@@ -162,35 +169,34 @@ const asjon = new AJSON()
   .use(myPlugin);
 ```
 
+Note: `use(fn)` is sugar for `fn(asjon)`.
+
 ## Supplied plugins
 
 ### `defaultEncoders`
 
-* `jsonPointer`: Replaces cycles and repeated objects with [JSON Pointers](https://tools.ietf.org/html/rfc6901).
-* `recurseObjects`: Recurses plain JS objects.
-* `recurseArrays`: Recurses plain JS arrays.
-* `recurseMap`: Recurses plain Maps returning the result in the form of `{ $map: [[...]] }`
-* `recurseSet`: Recurses plain Sets returning the result in the form of `{ $set: [...] }`
-* `specialNumbers`: Returns special numeric values (`-0`, `NaN` and +/-`Infinity`) as a strict [MongoDB Extended JSON numberDecimal](https://docs.mongodb.com/manual/reference/mongodb-extended-json/#numberdecimal) (`{ $numberDecimal: "..." }`).
-* `undefinedValue`: Returns undefined values as a strict [MongoDB Extended JSON undefined](https://docs.mongodb.com/manual/reference/mongodb-extended-json/#undefined-type) (`{ $undefined: true }`).
-* `regexpValue`: Returns regular expression values as a strict [MongoDB Extended JSON Regular Expressions](https://docs.mongodb.com/manual/reference/mongodb-extended-json/#regular-expression) (`{ "$regex": "...", "$options": "..." }`).
-* `dateValue`: Returns dates as a strict [MongoDB Extended JSON Regular Date](https://docs.mongodb.com/manual/reference/mongodb-extended-json/#date) (`{ "$date": "..." }`).
-* `symbolValue`: Returns symbols in the form of `{ $symbol: "..." }`
+* `encodeJSONPointer`: Replaces cycles and repeated objects with [JSON Pointers](https://tools.ietf.org/html/rfc6901).
+* `encodeBuffers`: Encodes buffers n the form of `{ $binary: '...' }` where the string is the Base64 encoded value.
+* `encodeMap`: Encodes Maps returning the result in the form of `{ $map: [[...]] }`
+* `encodeSet`: Encodes plain Sets returning the result in the form of `{ $set: [...] }`
+* `encodeSpecialNumbers`: Returns special numeric values (`-0`, `NaN` and +/-`Infinity`) as a strict [MongoDB Extended JSON numberDecimal](https://docs.mongodb.com/manual/reference/mongodb-extended-json/#numberdecimal) (`{ $numberDecimal: "..." }`).
+* `encodeUndefined`: Returns undefined values as a strict [MongoDB Extended JSON undefined](https://docs.mongodb.com/manual/reference/mongodb-extended-json/#undefined-type) (`{ $undefined: true }`).
+* `encodeRegexps`: Returns regular expression values as a strict [MongoDB Extended JSON Regular Expressions](https://docs.mongodb.com/manual/reference/mongodb-extended-json/#regular-expression) (`{ "$regex": "...", "$options": "..." }`).
+* `encodeDates`: Returns dates as a strict [MongoDB Extended JSON Regular Date](https://docs.mongodb.com/manual/reference/mongodb-extended-json/#date) (`{ "$date": "..." }`).
+* `encodeSymbols`: Returns symbols in the form of `{ $symbol: "..." }`
+* `toJSON`: Returns the result of the `toJSON` method for objects whose `toJSON` property is a function
 
 ### `defaultDecoders`
 
-* `recurseObjects`:
-* `recurseObjects`:
-* `recurseArrays`:
-* `decodeSpecialNumbers`:
-* `decodeUndefinedValue`:
-* `decodeRegexValue`:
-* `decodeDateValue`:
-* `decodeSymbolValue`:
-* `recurseDecodeMap`:
-* `recurseDecodeSet`:
-* `decodeBufferValue`:
-* `decodeJSONPointers`:
+* `decodeSpecialNumbers`: Decodes special numeric values.
+* `decodeUndefined`: Decodes `undefined`.
+* `decodeRegexps`: Decodes `Regexp` values.
+* `decodeDates`: Decodes `Date`s.
+* `decodeSymbols`: Decodes `Symbol`s.
+* `decodeMap`: Decodes `Map`s.
+* `decodeSet`: Decodes `Set`s.
+* `decodeBuffers`: Decodes `Buffer`.
+* `decodeJSONPointers`: Decodes JSON pointers.
 
 ## Alternatives
 
