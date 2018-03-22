@@ -4,7 +4,7 @@
 
 ## The Story
 
-![](https://imgflip.com/i/26xqmj)
+![](https://i.imgflip.com/26xqmj.jpg)
 
 So what you do is you take the JavaScript objects and you pass them down to the JSON?
 
