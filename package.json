@@ -1,6 +1,6 @@
 {
   "name": "smykowski",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/main/index.js",
   "typings": "dist/main/index.d.ts",
