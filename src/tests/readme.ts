@@ -1,13 +1,13 @@
 import * as jsonpointer from 'json-pointer';
 
 import { 
-  AJSON,
+  Smykowski,
   defaultEncoders,
   defaultDecoders
 } from '..';
 
 function usageExample() {
-  const asjon = new AJSON()
+  const asjon = new Smykowski()
     .use(defaultEncoders)
     .use(defaultDecoders);
 
@@ -67,7 +67,7 @@ function pluginExample() {
     };
   };
 
-  const asjon = new AJSON()
+  const asjon = new Smykowski()
     .addEncoder(foo)
     .addEncoder(jsonPointer);
 

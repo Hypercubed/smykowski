@@ -1,6 +1,6 @@
 import { Encoder, Path, Decoder } from './types';
 
-export class AJSON {
+export class Smykowski {
   private _encoders: Encoder[] = [];
   private _decoders: Decoder[] = [];
 
@@ -72,7 +72,7 @@ export class AJSON {
     return this;
   }
 
-  use(plugin: (a: AJSON) => AJSON) {
+  use(plugin: (a: Smykowski) => Smykowski) {
     plugin(this);
     return this;
   }

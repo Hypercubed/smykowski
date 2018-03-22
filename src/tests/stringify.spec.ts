@@ -2,11 +2,11 @@ import { test } from 'ava';
 import * as jsonpointer from 'json-pointer';
 
 import { 
-  AJSON,
+  Smykowski,
   defaultEncoders
 } from '../';
 
-const asjon = new AJSON()
+const asjon = new Smykowski()
   .use(defaultEncoders);
 
 test('all', t => {
@@ -65,7 +65,7 @@ test('demo', t => {
     };
   };
 
-  const a = new AJSON()
+  const a = new Smykowski()
     .addEncoder(jsonPointer)
     .addEncoder(foo);
 

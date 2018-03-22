@@ -1,4 +1,4 @@
-import { AJSON } from './ajson';
+import { Smykowski } from './smykowski';
 import { 
   encodeJSONPointer,
   encodeMap, encodeSet,
@@ -11,8 +11,8 @@ import {
   decodeJSONPointers
 } from './decoders';
 
-export function defaultEncoders(ajson: AJSON): AJSON {
-  return ajson
+export function defaultEncoders(_: Smykowski): Smykowski {
+  return _
     .addEncoder(encodeJSONPointer)
     .addEncoder(encodeBuffers)
     .addEncoder(encodeSpecialNumbers)
@@ -25,8 +25,8 @@ export function defaultEncoders(ajson: AJSON): AJSON {
     .addEncoder(toJSON);
 }
 
-export function defaultDecoders(ajson: AJSON): AJSON {
-  return ajson
+export function defaultDecoders(_: Smykowski): Smykowski {
+  return _
     .addDecoder(decodeSpecialNumbers)
     .addDecoder(decodeUndefined)
     .addDecoder(decodeRegexps)

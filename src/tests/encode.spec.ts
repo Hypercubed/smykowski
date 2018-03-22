@@ -1,9 +1,9 @@
 import { test } from 'ava';
 import { Person } from './fixtures/person';
 
-import { AJSON, defaultEncoders } from '..';
+import { Smykowski, defaultEncoders } from '..';
 
-const asjon = new AJSON()
+const asjon = new Smykowski()
   .use(defaultEncoders);
 
 test('prim values', t => {
@@ -155,7 +155,7 @@ test('toJSON', t => {
 });
 
 test('fail on circular structure without processor', t => {
-  const a = new AJSON();
+  const a = new Smykowski();
 
   const me: any = {
     name: 'Kris',
@@ -176,7 +176,7 @@ test('fail on circular structure without processor', t => {
 });
 
 test('do not fail on references', t => {
-  const a = new AJSON();
+  const a = new Smykowski();
 
   const me: any = {
     name: 'Kris',

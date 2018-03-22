@@ -1,9 +1,9 @@
 import { test } from 'ava';
 
-import { AJSON, defaultDecoders } from '..';
+import { Smykowski, defaultDecoders } from '..';
 import { Person } from './fixtures/person';
 
-const asjon = new AJSON()
+const asjon = new Smykowski()
   .use(defaultDecoders);
 
 test('prim values', t => {

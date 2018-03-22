@@ -2,12 +2,12 @@ import { test } from 'ava';
 import * as jsonpointer from 'json-pointer';
 
 import { 
-  AJSON,
+  Smykowski,
   defaultEncoders,
   defaultDecoders
 } from '../';
 
-const asjon = new AJSON()
+const asjon = new Smykowski()
   .use(defaultEncoders)
   .use(defaultDecoders);
 

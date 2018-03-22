@@ -1,5 +1,5 @@
 import * as jsonpointer from 'json-pointer';
-import { AJSON } from '..';
+import { Smykowski } from '..';
 import { Path } from '../types';
 
 export const decodeJSONPointers = (obj: any) => {

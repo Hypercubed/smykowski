@@ -2,19 +2,19 @@ import { test } from 'ava';
 import { Person } from './fixtures/person';
 
 import { 
-  AJSON,
+  Smykowski,
   jestSerializer
 } from '../';
 
 test('custom encoder', t => {
   const person = new Person('Benton', 'Chase');
-  const a = new AJSON()
+  const a = new Smykowski()
     .addEncoder(() => v => (v instanceof Person) ? { '@@Person': `${v.last}, ${v.first}` } : v);
   t.deepEqual(a.encode(person), { '@@Person': 'Chase, Benton' });
 });
 
 test('jest-serializer', t => {
-  const a = new AJSON()
+  const a = new Smykowski()
     .addEncoder(jestSerializer);
 
   const objs = [

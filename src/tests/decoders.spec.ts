@@ -1,6 +1,6 @@
 import { test } from 'ava';
 
-import { AJSON, defaultDecoders } from '..';
+import { Smykowski, defaultDecoders } from '..';
 import { Person } from './fixtures/person';
 
 export const decodePerson = () => {
@@ -12,7 +12,7 @@ export const decodePerson = () => {
   };
 };
 
-const asjon = new AJSON()
+const asjon = new Smykowski()
   .use(defaultDecoders)
   .addDecoder(decodePerson);
 

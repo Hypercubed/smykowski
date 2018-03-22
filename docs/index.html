@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ajson</title>
+	<title>smykowski</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">ajson</a>
+					<a href="index.html" class="title">smykowski</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -56,7 +56,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1> ajson</h1>
+			<h1> smykowski</h1>
 		</div>
 	</div>
 </header>
@@ -64,12 +64,27 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<h1 id="ajson">AJSON</h1>
-				<p>Advanced JSON. Like <code>JSON.stringify</code> and <code>JSON.parse</code> with plug-ins.</p>
+				<h1 id="smykowski">Smykowski</h1>
+				<p><em>I deal with the goddamn objects so JSON doesn’t have to!! I have object skills!!</em></p>
+				<h2 id="the-story">The Story</h2>
+				<p><img src="https://imgflip.com/i/26xqmj" alt=""></p>
+				<p>So what you do is you take the JavaScript objects and you pass them down to the JSON?</p>
+				<p><em>That, that&#39;s right.</em></p>
+				<p>Well, then I gotta ask, then why can&#39;t the objects go directly to JSON, huh?</p>
+				<p><em>Well, uh, uh, uh, because, uh, JSON is not good at dealing with some objects.</em></p>
+				<p>You convert the JS objects for JSON?</p>
+				<p><em>Well, no, my, my plugins do that, or, or your plugins do.</em></p>
+				<p>Ah. Then you must then convert the JSON back to objects.</p>
+				<p><em>Well...no. Yeah, I mean, sometimes.</em></p>
+				<p>Well, what would you say… you do here?</p>
+				<p><em>Well, look, I already told you. I deal with the goddamn objects so
+						JSON doesn’t have to!! I have object skills!! I am good at
+						dealing with objects!!! Can&#39;t you understand that?!? WHAT THE HELL IS
+				WRONG WITH YOU PEOPLE?!!!!!!!</em></p>
 				<h2 id="usage">Usage</h2>
-				<pre><code class="lang-js"><span class="hljs-keyword">import</span> {  AJSON, defaultEncoders, defaultDecoders } <span class="hljs-keyword">from</span> <span class="hljs-string">'ajson'</span>;
+				<pre><code class="lang-js"><span class="hljs-keyword">import</span> {  Smykowski, defaultEncoders, defaultDecoders } <span class="hljs-keyword">from</span> <span class="hljs-string">'smykowski'</span>;
 
-<span class="hljs-keyword">const</span> asjon = <span class="hljs-keyword">new</span> AJSON()
+<span class="hljs-keyword">const</span> asjon = <span class="hljs-keyword">new</span> Smykowski()
   .use(defaultEncoders)
   .use(defaultDecoders);
 
@@ -161,7 +176,7 @@
 </code></pre>
 				<p>returns the a new object &quot;equal&quot; to the first.</p>
 				<h2 id="plugins">Plugins</h2>
-				<p>In <code>ajson</code> we have a concept of encoders, decoders, and plugins.  Encoders and decoders are functions that take no arguments and return a &quot;replacer&quot; or &quot;reviver&quot; function with the signature <code>(value: any, path: Array&lt;string | number&gt;)</code>.  For encoders the &quot;replacer&quot; function should return the encoded JS object that will continue to be processed by additional plugins.  For decoders the &quot;reviver&quot; function returns the decoded JS object.  The <code>path</code> value may be user to write more advanced encoders/decoders.</p>
+				<p>In <code>Smykowski</code> we have a concept of encoders, decoders, and plugins.  Encoders and decoders are functions that take no arguments and return a &quot;replacer&quot; or &quot;reviver&quot; function with the signature <code>(value: any, path: Array&lt;string | number&gt;)</code>.  For encoders the &quot;replacer&quot; function should return the encoded JS object that will continue to be processed by additional plugins.  For decoders the &quot;reviver&quot; function returns the decoded JS object.  The <code>path</code> value may be user to write more advanced encoders/decoders.</p>
 				<p>For example, a very simple encoder that replaces all values that are not arrays with <code>&quot;foo&quot;</code>:</p>
 				<pre><code class="lang-ts"><span class="hljs-keyword">const</span> foo = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
   <span class="hljs-keyword">const</span> FOO = <span class="hljs-string">'foo'</span>;
@@ -170,7 +185,7 @@
   };
 };
 </code></pre>
-				<p>A more complex eample is an encoder that replaces duplicate values with JSON pointers:</p>
+				<p>A more complex examples is an encoder that replaces duplicate values with JSON pointers:</p>
 				<pre><code class="lang-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> jsonPointer = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
   <span class="hljs-keyword">const</span> repeated = <span class="hljs-keyword">new</span> WeakMap();
   <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params">v, path: Path</span>) =&gt;</span> {
@@ -185,7 +200,7 @@
 };
 </code></pre>
 				<p>The order of the plugins does matter.  In this case <code>jsonPointer</code> should come last:</p>
-				<pre><code class="lang-ts"><span class="hljs-keyword">const</span> asjon = <span class="hljs-keyword">new</span> AJSON()
+				<pre><code class="lang-ts"><span class="hljs-keyword">const</span> asjon = <span class="hljs-keyword">new</span> Smykowski()
   .addEncoder(foo)
   .addEncoder(jsonPointer);
 
@@ -195,15 +210,15 @@ asjon.stringify([arr, arr]);
 				<p>yields:</p>
 				<pre><code class="lang-json">[[<span class="hljs-string">"foo"</span>,<span class="hljs-string">"foo"</span>,<span class="hljs-string">"foo"</span>],{<span class="hljs-attr">"$ref"</span>:<span class="hljs-string">"foo"</span>}]
 </code></pre>
-				<p>Decoders work similarly using the <code>addDecoder</code> method.  A plugin is a set of encoders and/or decoders like so:</p>
-				<pre><code class="lang-ts"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">myPlugin</span>(<span class="hljs-params">_: AJSON</span>) </span>{
+				<p>Decoders work similarly using the <code>addDecoder</code> method.  A plug-in is a set of encoders and/or decoders like so:</p>
+				<pre><code class="lang-ts"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">myPlugin</span>(<span class="hljs-params">_: Smykowski</span>) </span>{
   <span class="hljs-keyword">return</span> _
     .addEncoder(recurseArrays)
     .addEncoder(foo)
     .addDecoder(myDecoder);
 }
 
-<span class="hljs-keyword">const</span> asjon = <span class="hljs-keyword">new</span> AJSON()
+<span class="hljs-keyword">const</span> asjon = <span class="hljs-keyword">new</span> Smykowski()
   .use(myPlugin);
 </code></pre>
 				<p>Note: <code>use(fn)</code> is sugar for <code>fn(asjon)</code>.</p>
@@ -254,7 +269,7 @@ asjon.stringify([arr, arr]);
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class tsd-is-external">
-						<a href="classes/ajson.html" class="tsd-kind-icon">AJSON</a>
+						<a href="classes/smykowski.html" class="tsd-kind-icon">Smykowski</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-is-external">
 						<a href="globals.html#decoder" class="tsd-kind-icon">Decoder</a>

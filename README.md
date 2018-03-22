@@ -1,13 +1,42 @@
-# AJSON
+# Smykowski
 
-Advanced JSON. Like `JSON.stringify` and `JSON.parse` with plug-ins.
+*I deal with the goddamn objects so JSON doesn’t have to!! I have object skills!!*
+
+## The Story
+
+![](https://imgflip.com/i/26xqmj)
+
+So what you do is you take the JavaScript objects and you pass them down to the JSON?
+
+*That, that's right.*
+
+Well, then I gotta ask, then why can't the objects go directly to JSON, huh?
+
+*Well, uh, uh, uh, because, uh, JSON is not good at dealing with some objects.*
+
+You convert the JS objects for JSON?
+
+*Well, no, my, my plugins do that, or, or your plugins do.*
+
+Ah. Then you must then convert the JSON back to objects.
+
+*Well...no. Yeah, I mean, sometimes.*
+
+Well, what would you say… you do here?
+
+*Well, look, I already told you. I deal with the goddamn objects so 
+JSON doesn’t have to!! I have object skills!! I am good at 
+dealing with objects!!! Can't you understand that?!? WHAT THE HELL IS 
+WRONG WITH YOU PEOPLE?!!!!!!!*
+
+
 
 ## Usage
 
 ```js
-import {  AJSON, defaultEncoders, defaultDecoders } from 'ajson';
+import {  Smykowski, defaultEncoders, defaultDecoders } from 'smykowski';
 
-const asjon = new AJSON()
+const asjon = new Smykowski()
   .use(defaultEncoders)
   .use(defaultDecoders);
 
@@ -108,7 +137,7 @@ returns the a new object "equal" to the first.
 
 ## Plugins
 
-In `ajson` we have a concept of encoders, decoders, and plugins.  Encoders and decoders are functions that take no arguments and return a "replacer" or "reviver" function with the signature `(value: any, path: Array<string | number>)`.  For encoders the "replacer" function should return the encoded JS object that will continue to be processed by additional plugins.  For decoders the "reviver" function returns the decoded JS object.  The `path` value may be user to write more advanced encoders/decoders.
+In `Smykowski` we have a concept of encoders, decoders, and plugins.  Encoders and decoders are functions that take no arguments and return a "replacer" or "reviver" function with the signature `(value: any, path: Array<string | number>)`.  For encoders the "replacer" function should return the encoded JS object that will continue to be processed by additional plugins.  For decoders the "reviver" function returns the decoded JS object.  The `path` value may be user to write more advanced encoders/decoders.
 
 For example, a very simple encoder that replaces all values that are not arrays with `"foo"`:
 
@@ -121,7 +150,7 @@ const foo = () => {
 };
 ```
 
-A more complex eample is an encoder that replaces duplicate values with JSON pointers:
+A more complex examples is an encoder that replaces duplicate values with JSON pointers:
 
 ```ts
 export const jsonPointer = () => {
@@ -141,7 +170,7 @@ export const jsonPointer = () => {
 The order of the plugins does matter.  In this case `jsonPointer` should come last:
 
 ```ts
-const asjon = new AJSON()
+const asjon = new Smykowski()
   .addEncoder(foo)
   .addEncoder(jsonPointer);
 
@@ -155,17 +184,17 @@ yields:
 [["foo","foo","foo"],{"$ref":"foo"}]
 ```
 
-Decoders work similarly using the `addDecoder` method.  A plugin is a set of encoders and/or decoders like so:
+Decoders work similarly using the `addDecoder` method.  A plug-in is a set of encoders and/or decoders like so:
 
 ```ts
-function myPlugin(_: AJSON) {
+function myPlugin(_: Smykowski) {
   return _
     .addEncoder(recurseArrays)
     .addEncoder(foo)
     .addDecoder(myDecoder);
 }
 
-const asjon = new AJSON()
+const asjon = new Smykowski()
   .use(myPlugin);
 ```
 
