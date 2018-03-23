@@ -7,12 +7,12 @@
   "module": "dist/module/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/smykowski"
+    "url": "https://github.com/hypercubed/smykowski"
   },
   "bugs": {
-    "url": "https://github.com/smykowski/issues"
+    "url": "https://github.com/hypercubed/smykowski/issues"
   },
-  "homepage": "https://github.com/smykowski#readme",
+  "homepage": "https://github.com/hypercubed/smykowski#readme",
   "author": "J. Harshbarger",
   "license": "MIT",
   "files": [
