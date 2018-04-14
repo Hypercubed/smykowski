@@ -1,13 +1,26 @@
 {
   "name": "smykowski",
   "version": "1.1.0",
-  "description": "",
+  "description": "*I deal with the goddamn objects so JSON doesn’t have to!! I have object skills!!*",
+  "keywords": [
+    "json",
+    "stringify",
+    "parse",
+    "circular",
+    "reference",
+    "deterministic",
+    "stable",
+    "encode",
+    "decode",
+    "serialize",
+    "serialization"
+  ],
   "main": "dist/main/index.js",
   "typings": "dist/main/index.d.ts",
   "module": "dist/module/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hypercubed/smykowski"
+    "url": "git+https://github.com/hypercubed/smykowski.git"
   },
   "bugs": {
     "url": "https://github.com/hypercubed/smykowski/issues"
@@ -57,7 +70,6 @@
     "typescript": "^2.7.2",
     "rimraf": "^2.6.2"
   },
-  "keywords": [],
   "nyc": {
     "exclude": [
       "**/*.spec.js"
@@ -72,5 +84,8 @@
   "dependencies": {
     "json-pointer": "^0.6.0",
     "tslib": "^1.7.1"
+  },
+  "directories": {
+    "doc": "docs"
   }
 }

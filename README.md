@@ -2,6 +2,12 @@
 
 *I deal with the goddamn objects so JSON doesn’t have to!! I have object skills!!*
 
+## Install
+
+```bash
+npm i smykowski
+```
+
 ## The Story
 
 ![](https://i.imgflip.com/26xqmj.jpg)
@@ -28,8 +34,6 @@ Well, what would you say… you do here?
 JSON doesn’t have to!! I have object skills!! I am good at 
 dealing with objects!!! Can't you understand that?!? WHAT THE HELL IS 
 WRONG WITH YOU PEOPLE?!!!!!!!*
-
-
 
 ## Usage
 
