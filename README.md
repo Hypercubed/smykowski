@@ -214,6 +214,7 @@ Note: `use(fn)` is sugar for `fn(asjon)`.
 * `encodeDates`: Returns dates as a strict [MongoDB Extended JSON Regular Date](https://docs.mongodb.com/manual/reference/mongodb-extended-json/#date) (`{ "$date": "..." }`).
 * `encodeSymbols`: Returns symbols in the form of `{ $symbol: "..." }`
 * `toJSON`: Returns the result of the `toJSON` method for objects whose `toJSON` property is a function
+* `stableObject`: Sorts object properties by key (get a consistent hash from objects)
 
 ### `defaultDecoders`
 
@@ -232,6 +233,7 @@ Note: `use(fn)` is sugar for `fn(asjon)`.
 * [devalue](https://github.com/Rich-Harris/devalue) by Rich Harris
 * [arson](https://github.com/benjamn/arson) by Ben Newman
 * [eson](https://github.com/tj/eson) by TJ Holowaychuk
+* [json-stable-stringify](https://github.com/substack/json-stable-stringify) by substack
 
 ## License
 

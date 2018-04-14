@@ -3,7 +3,7 @@ import {
   encodeJSONPointer,
   encodeMap, encodeSet,
   encodeSpecialNumbers, encodeUndefined, encodeRegexps, encodeDates,
-  encodeSymbols, toJSON, encodeBuffers
+  encodeSymbols, toJSON, encodeBuffers, stableObject
 } from './encoders';
 import {
   decodeSpecialNumbers, decodeSymbols, decodeMap, decodeSet, decodeBuffers, 
@@ -22,7 +22,8 @@ export function defaultEncoders(_: Smykowski): Smykowski {
     .addEncoder(encodeSymbols)
     .addEncoder(encodeMap)
     .addEncoder(encodeSet)
-    .addEncoder(toJSON);
+    .addEncoder(toJSON)
+    .addEncoder(stableObject);
 }
 
 export function defaultDecoders(_: Smykowski): Smykowski {

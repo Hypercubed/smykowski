@@ -24,3 +24,13 @@ export const toJSON = () => {
     return v;
   };
 };
+
+export const stableObject = () => {
+  return (v: any) => {
+    if (typeof v !== 'object' || v === null || Array.isArray(v)) return v;
+    return Object.keys(v).sort().reduce((acc, key) => {
+      acc[key] = v[key];
+      return acc;
+    }, {});
+  };
+};

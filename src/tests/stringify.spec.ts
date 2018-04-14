@@ -72,3 +72,8 @@ test('demo', t => {
   const arr = [1, 2, 3];
   t.snapshot(a.stringify([arr, arr]));
 });
+
+test('simple object, keys are sorted', t => {
+  const obj = { c: 8, b: [{ z: 6, y: 5, x: 4 }, 7], a: 3 };
+  t.deepEqual(asjon.stringify(obj), '{"a":3,"b":[{"x":4,"y":5,"z":6},7],"c":8}');
+});
