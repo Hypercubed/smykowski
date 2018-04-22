@@ -2,7 +2,7 @@ CHANGELOG
 =========
 
 ## HEAD (Unreleased)
-_(none)_
+* Use toJSON and fromJSON in class encoder
 
 --------------------
 
