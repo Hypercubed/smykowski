@@ -2,9 +2,12 @@ CHANGELOG
 =========
 
 ## HEAD (Unreleased)
-* Use toJSON and fromJSON in class encoder
+_(none)_
 
 --------------------
+
+## 1.3.0 (2018-04-22)
+* Use toJSON and fromJSON in class encoder
 
 ## 1.2.0 (2018-04-21)
 * Added classSerializer plugin
