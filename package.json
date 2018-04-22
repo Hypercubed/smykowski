@@ -60,15 +60,16 @@
     "chg": "^0.3.2",
     "codecov": "^3.0.0",
     "concurrently": "^3.5.0",
+    "memwatch-next": "^0.3.0",
     "np": "^2.16.0",
     "npm-run-all": "^4.0.2",
     "nyc": "^11.6.0",
+    "rimraf": "^2.6.2",
     "sleep-ms": "^2.0.1",
     "tslint": "^5.0.0",
     "tslint-config-swimlane": "^3.0.2",
     "typedoc": "^0.11.1",
-    "typescript": "^2.7.2",
-    "rimraf": "^2.6.2"
+    "typescript": "^2.7.2"
   },
   "nyc": {
     "exclude": [
@@ -83,6 +84,7 @@
   },
   "dependencies": {
     "json-pointer": "^0.6.0",
+    "reflect-metadata": "^0.1.12",
     "tslib": "^1.7.1"
   },
   "directories": {

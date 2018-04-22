@@ -232,12 +232,65 @@ Note: `use(fn)` is sugar for `fn(asjon)`.
 * `decodeBuffers`: Decodes `Buffer`.
 * `decodeJSONPointers`: Decodes JSON pointers.
 
+### `classHints`
+
+This plugin registers classes for encoding/decoding using typed hints.  For example:
+
+```ts
+class Person {
+  constructor(public first: string, public last: string) {
+
+  }
+
+  getFullname() {
+    return this.first + ' ' + this.last;
+  }
+}
+
+class Employee extends Person {
+  constructor(public first: string, public last: string, public id: string) {
+    super(first, last);
+
+  }
+}
+
+const ajson = new Smykowski()
+  .use(classHints, { Person, Employee })
+  .use(defaultEncoders)
+  .use(defaultDecoders);
+
+const str = ajson.stringify([new Person('John', 'Doe'), new Employee('Jane', 'Doe', 'A123')]);
+/*
+  [
+    {
+      "@@Person": {
+        "first": "John",
+        "last": "Doe"
+      }
+    },
+    {
+      "@@Employee": {
+        "first": "Jane",
+        "id": "A123",
+        "last": "Doe"
+    }
+  ]
+*/
+
+const [ john, jane ] = ajson.parse(str) as [Person, Employee];
+
+john instanceof Person; // true
+jane instanceof Employee; // true
+jane.getFullname(); // "Jane Doe"
+```
+
 ## Alternatives
 
-* [devalue](https://github.com/Rich-Harris/devalue) by Rich Harris
-* [arson](https://github.com/benjamn/arson) by Ben Newman
-* [eson](https://github.com/tj/eson) by TJ Holowaychuk
-* [json-stable-stringify](https://github.com/substack/json-stable-stringify) by substack
+* [Rich-Harris/devalue](https://github.com/Rich-Harris/devalue)
+* [benjamn/arson](https://github.com/benjamn/arson)
+* [tj/eson](https://github.com/tj/eson)
+* [substack/json-stable-stringify](https://github.com/substack/json-stable-stringify)
+* [JohnWeisz/TypedJSON](https://github.com/JohnWeisz/TypedJSON)
 
 ## License
 

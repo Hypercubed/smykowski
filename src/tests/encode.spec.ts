@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import { test } from 'ava';
 import { Person } from './fixtures/person';
 

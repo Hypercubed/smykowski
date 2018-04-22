@@ -1,12 +1,14 @@
 import { Encoder, Path, Decoder } from './types';
 
+export type Plugin = (a: Smykowski, ...args) => Smykowski;
+
 export class Smykowski {
   private _encoders: Encoder[] = [];
   private _decoders: Decoder[] = [];
 
-  encode(value: any): any {
+  encode(value: any, ...args): any {
     const stack: any = [];
-    const encoders = this._encoders.map(p => p());
+    const encoders = this._encoders.map(p => p(value, ...args));
     return get(value, []);
 
     function get(v: any, path: Path): any {
@@ -62,18 +64,18 @@ export class Smykowski {
     return this.decode(JSON.parse(value, reviver));
   }
 
-  addEncoder(fn: Encoder) {
-    this._encoders.push(fn);
+  addEncoder(fn: Encoder, ...args: any[]) {
+    this._encoders.push(fn.bind(this, ...args));
     return this;
   }
 
-  addDecoder(fn: Encoder) {
-    this._decoders.push(fn);
+  addDecoder(fn: Encoder, ...args: any[]) {
+    this._decoders.push(fn.bind(this, ...args));
     return this;
   }
 
-  use(plugin: (a: Smykowski) => Smykowski) {
-    plugin(this);
+  use(plugin: (a: Smykowski, ...args: any[]) => Smykowski, ...args: any[]) {
+    plugin(this, ...args);
     return this;
   }
 }

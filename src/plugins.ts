@@ -3,13 +3,14 @@ import {
   encodeJSONPointer,
   encodeMap, encodeSet,
   encodeSpecialNumbers, encodeUndefined, encodeRegexps, encodeDates,
-  encodeSymbols, toJSON, encodeBuffers, stableObject
+  encodeSymbols, toJSON, encodeBuffers, stableObject, classEncoder
 } from './encoders';
 import {
   decodeSpecialNumbers, decodeSymbols, decodeMap, decodeSet, decodeBuffers, 
   decodeUndefined, decodeRegexps, decodeDates,
-  decodeJSONPointers
+  decodeJSONPointers, classDecoder
 } from './decoders';
+import { Constructor } from './types';
 
 export function defaultEncoders(_: Smykowski): Smykowski {
   return _
@@ -37,4 +38,10 @@ export function defaultDecoders(_: Smykowski): Smykowski {
     .addDecoder(decodeMap)
     .addDecoder(decodeSet)
     .addDecoder(decodeJSONPointers);
+}
+
+export function classHints(_: Smykowski, constuctors: { [x: string]: Constructor }): Smykowski {
+  return _
+    .addEncoder(classEncoder, constuctors)
+    .addDecoder(classDecoder, constuctors);
 }

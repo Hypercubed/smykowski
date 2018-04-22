@@ -3,7 +3,8 @@ import { Person } from './fixtures/person';
 
 import { 
   Smykowski,
-  jestSerializer
+  jestSerializer,
+  defaultEncoders
 } from '../';
 
 test('custom encoder', t => {
