@@ -4,7 +4,7 @@ import {
   Smykowski,
   defaultEncoders,
   defaultDecoders,
-  classHints
+  classSerializer
 } from '../';
 import { create } from 'domain';
 
@@ -26,7 +26,7 @@ class Employee extends Person {
 }
 
 const ajson = new Smykowski()
-  .use(classHints, { Person, Employee })
+  .use(classSerializer, { Person, Employee })
   .use(defaultEncoders)
   .use(defaultDecoders);
 
@@ -54,15 +54,18 @@ test('Hints Decode', t => {
 
   const people = [
     { '@@Person': p },
-    { '@@Employee': e }
+    { '@@Employee': e },
+    { Employee: e }
   ];
 
   const d = ajson.decode(people);
 
   t.truthy(d[0] instanceof Person);
   t.truthy(d[1] instanceof Employee);
+  t.falsy(d[2] instanceof Employee);
   t.deepEqual({...d[0]}, p);
   t.deepEqual({...d[1]}, e);
+  t.deepEqual({...d[2]}, { Employee: { ...e } });
 });
 
 test('readme', t => {

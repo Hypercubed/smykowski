@@ -232,7 +232,7 @@ Note: `use(fn)` is sugar for `fn(asjon)`.
 * `decodeBuffers`: Decodes `Buffer`.
 * `decodeJSONPointers`: Decodes JSON pointers.
 
-### `classHints`
+### `classSerializer`
 
 This plugin registers classes for encoding/decoding using typed hints.  For example:
 
@@ -255,7 +255,7 @@ class Employee extends Person {
 }
 
 const ajson = new Smykowski()
-  .use(classHints, { Person, Employee })
+  .use(classSerializer, { Person, Employee })
   .use(defaultEncoders)
   .use(defaultDecoders);
 
