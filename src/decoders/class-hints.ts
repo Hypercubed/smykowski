@@ -18,6 +18,9 @@ export function classDecoder(constuctors) {
   }
 
   function createInstance(v: any, ctor: Constructor) {
+    if (typeof ctor.fromJSON === 'function') {
+      return ctor.fromJSON(v);
+    }
     const o = new ctor();
     Object.assign(o, v);
     return o;

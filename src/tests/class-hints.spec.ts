@@ -8,20 +8,46 @@ import {
 } from '../';
 import { create } from 'domain';
 
-class Person {
-  constructor(public first: string, public last: string) {
+class Address {
+  constructor(public num: string, public street: string) {
+  }
+}
 
+class Person {
+  static fromJSON(obj) {
+    const [first, last] = obj.name.split(' ');
+    return new Person(first, last);
+  }
+
+  constructor(public first: string, public last: string) {
   }
 
   getFullname() {
     return this.first + ' ' + this.last;
   }
+
+  toJSON() {
+    return {
+      name: this.getFullname()
+    };
+  }
 }
 
 class Employee extends Person {
-  constructor(public first: string, public last: string, public id: string) {
-    super(first, last);
+  static fromJSON(obj) {
+    const [first, last] = obj.name.split(' ');
+    return new Employee(first, last, obj.dob);
+  }
 
+  constructor(first: string, last: string, public dob: Date) {
+    super(first, last);
+  }
+
+  toJSON() {
+    return {
+      name: this.getFullname(),
+      dob: this.dob
+    };
   }
 }
 
@@ -30,72 +56,68 @@ const ajson = new Smykowski()
   .use(defaultEncoders)
   .use(defaultDecoders);
 
-const p = {
-  first: 'John',
-  last: 'Doe'
-};
-
-const e = {
-  first: 'John',
-  last: 'Doe',
-  id: 'A123'
-};
+const john = new Person('John', 'Doe');
+const jane = new Employee('Jane', 'Doe', new Date('2001-09-09T01:46:40.000Z'));
 
 test('Hints', t => {
-  const people = [new Person('John', 'Doe'), new Employee('John', 'Doe', 'A123')];
+  const people = [
+    john,
+    jane,
+    { Employee: { ...jane } }
+  ];
 
   t.deepEqual(ajson.encode(people), [
-    { '@@Person': p },
-    { '@@Employee': e }
+    { '@@Person': { name: 'John Doe' } },
+    { '@@Employee': { name: 'Jane Doe', dob: { $date: '2001-09-09T01:46:40.000Z' } } },
+    { Employee: { ...jane } }
   ]);
 });
 
 test('Hints Decode', t => {
 
   const people = [
-    { '@@Person': p },
-    { '@@Employee': e },
+    { '@@Person': { name: 'John Doe' } },
+    { '@@Employee': { name: 'Jane Doe', dob: { $date: '2001-09-09T01:46:40.000Z' } } },
     { Employee: e }
   ];
 
-  const d = ajson.decode(people);
+  const [person, employee, obj] = ajson.decode(people);
 
-  t.truthy(d[0] instanceof Person);
-  t.truthy(d[1] instanceof Employee);
-  t.falsy(d[2] instanceof Employee);
-  t.deepEqual({...d[0]}, p);
-  t.deepEqual({...d[1]}, e);
-  t.deepEqual({...d[2]}, { Employee: { ...e } });
+  t.truthy(person instanceof Person);
+  t.truthy(employee instanceof Employee);
+  t.truthy(employee.dob instanceof Date);
+  t.falsy(obj instanceof Employee);
+  t.deepEqual({...person}, p);
+  t.deepEqual({...employee}, e);
+  t.deepEqual({...obj}, { Employee: { ...e } });
 });
 
 test('readme', t => {
   const str = ajson.stringify([
     new Person('John', 'Doe'), 
-    new Employee('Jane', 'Doe', 'A123')
+    new Employee('Jane', 'Doe', new Date(1e12))
   ], undefined, 2);
 
-  /* 
-  [
-    {
-      "@@Person": {
-        "first": "John",
-        "last": "Doe"
-      }
-    },
-    {
-      "@@Employee": {
-        "first": "Jane",
-        "id": "A123",
-        "last": "Doe"
+  t.deepEqual(str, `[
+  {
+    "@@Person": {
+      "name": "John Doe"
     }
-  ]
-  */
-
-  t.snapshot(str);
+  },
+  {
+    "@@Employee": {
+      "dob": {
+        "$date": "2001-09-09T01:46:40.000Z"
+      },
+      "name": "Jane Doe"
+    }
+  }
+]`);
 
   const [ john, jane ] = ajson.parse(str) as [Person, Employee];
 
   t.true(john instanceof Person); // true
   t.true(jane instanceof Employee); // true
+  t.true(jane.dob instanceof Date); // true
   t.deepEqual(jane.getFullname(), 'Jane Doe');
 });
