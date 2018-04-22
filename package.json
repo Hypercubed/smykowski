@@ -48,7 +48,7 @@
     "send-coverage": "nyc report --reporter=lcov > coverage.lcov && codecov",
     "changelog": "chg release -y && git add -A CHANGELOG.md",
     "version": "npm-run-all changelog build",
-    "np": "npm-run-all build:main build:module && np",
+    "np": "npm-run-all build:main build:module && np --no-cleanup",
     "docs": "typedoc ./src/index.ts --out docs --mode file --theme default"
   },
   "engines": {
