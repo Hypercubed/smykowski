@@ -2,9 +2,12 @@ CHANGELOG
 =========
 
 ## HEAD (Unreleased)
-* Added classSerializer plugin
+_(none)_
 
 --------------------
+
+## 1.2.0 (2018-04-21)
+* Added classSerializer plugin
 
 ## 1.1.1 (2018-04-13)
 * Updated readme, published for npm
