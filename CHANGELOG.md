@@ -6,6 +6,9 @@ _(none)_
 
 --------------------
 
+## 1.3.1 (2018-04-24)
+_(none)_
+
 ## 1.3.0 (2018-04-22)
 * Use toJSON and fromJSON in class encoder
 
