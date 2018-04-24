@@ -4,7 +4,7 @@ import {
   defaultDecoders
 } from '..';
 
-import * as memwatch from 'memwatch-next';
+// import * as memwatch from 'memwatch-next';
 
 let c = 0;
 
@@ -47,9 +47,9 @@ function usageExample() {
   console.log(c++, stringified.length, Object.keys(parsed).length);
 }
 
-memwatch.on('leak', (info) => {
+/* memwatch.on('leak', (info) => {
   console.error('Memory leak detected:\n', info);
-});
+}); */
 
 setInterval(() => {
   usageExample();

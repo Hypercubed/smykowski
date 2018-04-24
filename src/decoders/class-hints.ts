@@ -5,8 +5,9 @@ export function classDecoder(constuctors) {
     if (isObject(v)) {
       const [key, ...rest] = Object.keys(v);
       if (rest.length === 0) {
-        if (key[0] === '@' && key[1] === '@') {
-          return createInstance(v[key], constuctors[key.slice(2)]);
+        const ctor = constuctors[key.slice(2)];
+        if (ctor && key[0] === '@' && key[1] === '@') {
+          return createInstance(v[key], ctor);
         }
       }
     }
@@ -18,6 +19,9 @@ export function classDecoder(constuctors) {
   }
 
   function createInstance(v: any, ctor: Constructor) {
+    if (typeof ctor.fromJSON === 'function') {
+      return ctor.fromJSON(v);
+    }
     const o = new ctor();
     Object.assign(o, v);
     return o;

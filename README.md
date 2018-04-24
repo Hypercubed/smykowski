@@ -2,12 +2,6 @@
 
 *I deal with the goddamn objects so JSON doesn’t have to!! I have object skills!!*
 
-## Install
-
-```bash
-npm i smykowski
-```
-
 ## The Story
 
 ![](https://i.imgflip.com/26xqmj.jpg)
@@ -34,6 +28,25 @@ Well, what would you say… you do here?
 JSON doesn’t have to!! I have object skills!! I am good at 
 dealing with objects!!! Can't you understand that?!? WHAT THE HELL IS 
 WRONG WITH YOU PEOPLE?!!!!!!!*
+
+## Goals
+
+Create a pluggable tool to encode and decode JavaScript objects to and from data structures compatible with the JSON.  Non-goals include parsing/stringifying to/from non-JSON strings.
+
+## Current plugin features (see [Supplied plugins](#supplied-plugins) below)
+
+* cyclical and repeated references
+* `undefined`, ±`Infinity`, `NaN`, `-0`
+* regexp, dates, buffers, maps and sets
+* deterministic (sorted) hash of objects
+* `toJSON` and `fromJSON`
+* registered classes
+
+## Install
+
+```bash
+npm i smykowski
+```
 
 ## Usage
 
@@ -232,7 +245,7 @@ Note: `use(fn)` is sugar for `fn(asjon)`.
 * `decodeBuffers`: Decodes `Buffer`.
 * `decodeJSONPointers`: Decodes JSON pointers.
 
-### `classHints`
+### `classSerializer`
 
 This plugin registers classes for encoding/decoding using typed hints.  For example:
 
@@ -255,7 +268,7 @@ class Employee extends Person {
 }
 
 const ajson = new Smykowski()
-  .use(classHints, { Person, Employee })
+  .use(classSerializer, { Person, Employee })
   .use(defaultEncoders)
   .use(defaultDecoders);
 

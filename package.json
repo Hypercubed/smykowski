@@ -1,6 +1,6 @@
 {
   "name": "smykowski",
-  "version": "1.1.1",
+  "version": "1.3.0",
   "description": "*I deal with the goddamn objects so JSON doesn’t have to!! I have object skills!!*",
   "keywords": [
     "json",
@@ -43,12 +43,12 @@
     "check-coverage": "nyc check-coverage --lines 100 --functions 100 --branches 100",
     "test": "npm-run-all lint build:main test:unit check-coverage",
     "watch": "run-s clean build:main && run-p \"build:main -- -w\" \"test:unit -- --watch\"",
-    "cov": "npm-run-all build unit html-coverage && opn coverage/index.html",
+    "cov": "npm-run-all build test:unit html-coverage && opn coverage/index.html",
     "html-coverage": "nyc report --reporter=html",
     "send-coverage": "nyc report --reporter=lcov > coverage.lcov && codecov",
     "changelog": "chg release -y && git add -A CHANGELOG.md",
     "version": "npm-run-all changelog build",
-    "np": "npm-run-all build:main build:module && np",
+    "np": "npm-run-all build:* && np --no-cleanup",
     "docs": "typedoc ./src/index.ts --out docs --mode file --theme default"
   },
   "engines": {

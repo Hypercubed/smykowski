@@ -40,7 +40,7 @@ export function defaultDecoders(_: Smykowski): Smykowski {
     .addDecoder(decodeJSONPointers);
 }
 
-export function classHints(_: Smykowski, constuctors: { [x: string]: Constructor }): Smykowski {
+export function classSerializer(_: Smykowski, constuctors: { [x: string]: Constructor }): Smykowski {
   return _
     .addEncoder(classEncoder, constuctors)
     .addDecoder(classDecoder, constuctors);

@@ -6,9 +6,9 @@ export class Smykowski {
   private _encoders: Encoder[] = [];
   private _decoders: Decoder[] = [];
 
-  encode(value: any, ...args): any {
+  encode(value: any): any {
     const stack: any = [];
-    const encoders = this._encoders.map(p => p(value, ...args));
+    const encoders = this._encoders.map(p => p(value));
     return get(value, []);
 
     function get(v: any, path: Path): any {
