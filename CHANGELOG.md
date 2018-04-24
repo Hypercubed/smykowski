@@ -2,9 +2,12 @@ CHANGELOG
 =========
 
 ## HEAD (Unreleased)
-* Bugfix: Fix undefined Buffer in browser
+_(none)_
 
 --------------------
+
+## 1.3.2 (2018-04-24)
+* Bugfix: Fix undefined Buffer in browser
 
 ## 1.3.1 (2018-04-24)
 * Bugfix: Export decoders
