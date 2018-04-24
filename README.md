@@ -31,7 +31,7 @@ WRONG WITH YOU PEOPLE?!!!!!!!*
 
 ## Goals
 
-Create a pluggable lib to encode JavaScript objects into data structures compatible with JSON.  Non-goals include parsing/stringifing to/from non-JSON compatible JavaScript objects.
+Create a pluggable tool to encode and decode JavaScript objects to and from data structures compatible with the JSON.  Non-goals include parsing/stringifying to/from non-JSON strings.
 
 ## Current plugin features (see [Supplied plugins](#supplied-plugins) below)
 
