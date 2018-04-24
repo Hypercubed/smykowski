@@ -35,6 +35,10 @@ JSON doesn’t have to!! I have object skills!! I am good at
 dealing with objects!!! Can't you understand that?!? WHAT THE HELL IS 
 WRONG WITH YOU PEOPLE?!!!!!!!*
 
+## Goals
+
+Create a pluggable lib to encode JavaScript objects into data structures compatible with JSON.  Non-goals include parsing/stringifing to/from non-JSON compatible JavaScript objects.
+
 ## Usage
 
 ```js
