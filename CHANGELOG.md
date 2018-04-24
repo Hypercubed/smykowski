@@ -2,9 +2,12 @@ CHANGELOG
 =========
 
 ## HEAD (Unreleased)
-* Bugfix: Buffer undefined (again)
+_(none)_
 
 --------------------
+
+## 1.3.3 (2018-04-24)
+* Bugfix: Buffer undefined (again)
 
 ## 1.3.2 (2018-04-24)
 * Bugfix: Fix undefined Buffer in browser
