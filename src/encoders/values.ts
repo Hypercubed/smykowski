@@ -22,7 +22,7 @@ export const encodeSymbols = () => {
 
 export const encodeBuffers = () => {
   return (v: any) => {
-    if (v instanceof Buffer) {
+    if (Buffer && v instanceof Buffer) {
       return { $binary: v.toString('base64') };
     }
     return v;

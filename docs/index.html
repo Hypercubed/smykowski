@@ -66,9 +66,6 @@
 			<div class="tsd-panel tsd-typography">
 				<h1 id="smykowski">Smykowski</h1>
 				<p><em>I deal with the goddamn objects so JSON doesn’t have to!! I have object skills!!</em></p>
-				<h2 id="install">Install</h2>
-				<pre><code class="lang-bash">npm i smykowski
-</code></pre>
 				<h2 id="the-story">The Story</h2>
 				<p><img src="https://i.imgflip.com/26xqmj.jpg" alt=""></p>
 				<p>So what you do is you take the JavaScript objects and you pass them down to the JSON?</p>
@@ -84,6 +81,20 @@
 						JSON doesn’t have to!! I have object skills!! I am good at
 						dealing with objects!!! Can&#39;t you understand that?!? WHAT THE HELL IS
 				WRONG WITH YOU PEOPLE?!!!!!!!</em></p>
+				<h2 id="goals">Goals</h2>
+				<p>Create a pluggable tool to encode and decode JavaScript objects to and from data structures compatible with the JSON.  Non-goals include parsing/stringifying to/from non-JSON strings.</p>
+				<h2 id="current-plugin-features-see-supplied-plugins-below-">Current plugin features (see <a href="#supplied-plugins">Supplied plugins</a> below)</h2>
+				<ul>
+					<li>cyclical and repeated references</li>
+					<li><code>undefined</code>, ±<code>Infinity</code>, <code>NaN</code>, <code>-0</code></li>
+					<li>regexp, dates, buffers, maps and sets</li>
+					<li>deterministic (sorted) hash of objects</li>
+					<li><code>toJSON</code> and <code>fromJSON</code></li>
+					<li>registered classes</li>
+				</ul>
+				<h2 id="install">Install</h2>
+				<pre><code class="lang-bash">npm i smykowski
+</code></pre>
 				<h2 id="usage">Usage</h2>
 				<pre><code class="lang-js"><span class="hljs-keyword">import</span> {  Smykowski, defaultEncoders, defaultDecoders } <span class="hljs-keyword">from</span> <span class="hljs-string">'smykowski'</span>;
 
