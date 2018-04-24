@@ -27,7 +27,7 @@ export const decodeMap = () => {
 
 export const decodeBuffers = () => {
   return (v: any) => {
-    if (Buffer && v !== null && typeof v === 'object' && v.hasOwnProperty('$binary')) {
+    if (typeof Buffer !== 'undefined' && v !== null && typeof v === 'object' && v.hasOwnProperty('$binary')) {
       return new Buffer(v.$binary, 'base64');
     }
     return v;
