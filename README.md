@@ -2,12 +2,6 @@
 
 *I deal with the goddamn objects so JSON doesn’t have to!! I have object skills!!*
 
-## Install
-
-```bash
-npm i smykowski
-```
-
 ## The Story
 
 ![](https://i.imgflip.com/26xqmj.jpg)
@@ -38,6 +32,21 @@ WRONG WITH YOU PEOPLE?!!!!!!!*
 ## Goals
 
 Create a pluggable lib to encode JavaScript objects into data structures compatible with JSON.  Non-goals include parsing/stringifing to/from non-JSON compatible JavaScript objects.
+
+## Current plugin features (see [Supplied plugins](#supplied-plugins) below)
+
+* cyclical and repeated references
+* `undefined`, ±`Infinity`, `NaN`, `-0`
+* regexp, dates, buffers, maps and sets
+* deterministic (sorted) hash of objects
+* `toJSON` and `fromJSON`
+* registered classes
+
+## Install
+
+```bash
+npm i smykowski
+```
 
 ## Usage
 
