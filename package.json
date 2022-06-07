@@ -59,7 +59,7 @@
     "ava": "^3.0.0",
     "chg": "^0.3.2",
     "codecov": "^3.0.0",
-    "concurrently": "^3.5.0",
+    "concurrently": "3.6.1",
     "memwatch-next": "^0.3.0",
     "np": "^2.16.0",
     "npm-run-all": "^4.0.2",
