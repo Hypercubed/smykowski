@@ -68,7 +68,7 @@
     "sleep-ms": "^2.0.1",
     "tslint": "^5.0.0",
     "tslint-config-swimlane": "^3.0.2",
-    "typedoc": "^0.21.0",
+    "typedoc": "^0.24.0",
     "typescript": "^2.7.2"
   },
   "nyc": {
